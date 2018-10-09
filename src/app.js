@@ -1,27 +1,20 @@
-import React from 'react';
-import Router from 'react-router';
-import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import { Link } from 'react-router-dom';
 import HelloHandler from './controller/hello.js';
 
-let App = React.createClass({
+class App extends Component {
     render() {
         return (
             <div className="nav">
-                <Link to="app" className="homelink">Home  </Link>
-                <Link to="hello" className="hellolink">  Say Hello</Link>
-                {/* this is the importTant part */}
-                <RouteHandler />
+                <HelloHandler />
             </div>
         );
     }
-});
+}
 
-let routes = (
-    <Route name="app" path="/" handler={App}>
-        <Route name="hello" path="/hello" handler={HelloHandler} />
-    </Route>
-);
 
-Router.run(routes, function (Handler) {
-    React.render(<Handler />, document.body);
-});
+ReactDOM.render(
+    <App />,
+    document.getElementById('app')
+)

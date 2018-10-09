@@ -1,10 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-let Hello = React.createClass({
-
+export default class Hello extends Component {
   render() {
-    return(<div>Hello World!</div>);
+    return (<div>Hello World!</div>);
   }
-});
-
-export default Hello;
+}
