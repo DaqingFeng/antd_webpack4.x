@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Link } from 'react-router-dom';
 import HelloHandler from './controller/hello.js';
 
 class App extends Component {
