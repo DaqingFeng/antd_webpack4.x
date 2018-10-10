@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import HelloHandler from './controller/hello.js';
+import Hello from './views/homePage/hello';
+import commonFunc from './utils/commonFunc';
 
 class App extends Component {
     render() {
+        const dateTimeNow = commonFunc.getNowFormatDate();
         return (
             <div className="nav">
-                <HelloHandler />
+                <Hello />
             </div>
         );
     }
 }
-
 
 ReactDOM.render(
     <App />,
