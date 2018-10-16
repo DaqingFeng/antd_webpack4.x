@@ -1,3 +1,6 @@
+
+import uuidv4 from 'uuid/v4';
+
 class generateGuid {
     static newGuid() {
         let d = new Date().getTime();
@@ -16,5 +19,11 @@ class generateGuid {
         let guid32 = generateGuid.newGuid();
         return guid32.substr(0, 16);
     }
+
+    static newGuidV4() {
+        return uuidv4();
+    }
 }
+
+
 export default generateGuid;

@@ -2,17 +2,23 @@ import * as  setting from '../setting/appSettings';
 
 export default class commonFunc {
 
-    /*通过controller获取$scope对象*/
-    static getScope(controllerName) {
-        var appElement = document.querySelector('[ng-controller=' + controllerName + ']');
-        return angular.element(appElement).scope();
-    }
-
     static scriptToText(html) {
         var tmp = document.createElement("DIV");
         tmp.innerHTML = html;
         return tmp.textContent || tmp.innerText || "";
     }
+
+    /**
+     * 是否为正确的Email地址 
+     * @param {email} email 地址
+     */
+    static isValidEmail(email) {
+        if (email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
       * 获取当前服务url根地址
@@ -25,32 +31,6 @@ export default class commonFunc {
             window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
         }
         var baseurl = window.location.origin;
-        if (path.charAt(0) != '/') {
-            path = '/' + path;
-        }
-        if (viturapath.length > 0) {
-            if (viturapath.charAt(0) != '/') {
-                viturapath = "/" + viturapath;
-            }
-        }
-        return baseurl + viturapath + path;
-    }
-
-    /**
-     * 获取当前服务url根地址
-     * @param {Path} path  route路径
-     */
-    static getWsDomainUrl(path, defaultDomain = null) {
-        let self = this;
-        let url = "";
-        if (defaultDomain == null) {
-            url = "ws://" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-        }
-        else {
-            url = "ws://" + defaultDomain;
-        }
-        let viturapath = setting.vitrualPath;
-        var baseurl = url;
         if (path.charAt(0) != '/') {
             path = '/' + path;
         }
