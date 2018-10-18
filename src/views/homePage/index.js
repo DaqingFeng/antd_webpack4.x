@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
-import { Row, Col } from 'antd';
-import { enquireScreen, unenquireScreen } from 'enquire-js';
-import './index.css';
-import { isSymbol } from 'util';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Button, Row, Col } from 'antd';
 import DocumentTitle from 'react-document-title';
+import ShowBox from "../../actions/messageBoxActions.js";
+import { messageBoxType } from '../../utils/Enums.js';
+import './index.css';
 
-export default class Home extends Component {
+class Home extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   componentDidMount() {
-    this.enquireHandler = enquireScreen(ismobile => {
-      console.log(ismobile);
-    });
+
   }
 
   componentWillUnmount() {
-    unenquireScreen(this.enquireHandler);
+
+  }
+
+  btnClickListen(event) {
+    this.props.showBox(messageBoxType.SUCCESS, "确认提交吗?", (args) => {
+      console.log(args);
+    });
   }
 
   render() {
@@ -23,12 +31,14 @@ export default class Home extends Component {
       <DocumentTitle title="Welcome">
         <div>
           <Row>
-            <Col span={12}>col-12</Col>
+            <Col span={12}>
+              col-xxx
+            </Col>
             <Col span={12}>col-12</Col>
           </Row>
           <Row>
             <Col span={8}>col-8</Col>
-            <Col span={8}>col-8</Col>
+            <Col span={8}><Button type="primary" value="small" onClick={this.btnClickListen.bind(this)}>ShowDialog</Button></Col>
             <Col span={8}>col-8</Col>
           </Row>
           <Row>
@@ -38,9 +48,15 @@ export default class Home extends Component {
             <Col span={6}>col-6</Col>
           </Row>
         </div>
-        </DocumentTitle>
+      </DocumentTitle>
     );
   }
 }
 
-
+export default connect(state => (
+  {
+    messagebox: state.messageBoxReduce || {},
+  }),
+  dispatch => ({
+    showBox: bindActionCreators(ShowBox, dispatch)
+  }))(Home)

@@ -4,12 +4,12 @@ var path = require("path");
 module.exports = {
     mode: 'development',
     resolve: {
-        extensions: ['.js', '.ts', '.tsx', '.jsx']
+        extensions: ['.js','.jsx', '.ts', '.tsx']
     },
     devServer: {
         hot: true,
         inline: true,
-        
+
         port: 8100
     },
     entry: [
@@ -37,7 +37,7 @@ module.exports = {
                 }]
             },
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader'
@@ -46,6 +46,9 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.LoaderOptionsPlugin({
+            debug: true
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.ProvidePlugin({
             React: 'react',
