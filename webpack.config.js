@@ -4,13 +4,13 @@ var path = require("path");
 module.exports = {
     mode: 'development',
     resolve: {
-        extensions: ['.js','.jsx', '.ts', '.tsx']
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
     devServer: {
         hot: true,
         inline: true,
-
-        port: 8100
+        port: 8100,
+        historyApiFallback: true,
     },
     entry: [
         'webpack/hot/only-dev-server',
@@ -33,7 +33,8 @@ module.exports = {
                 }, {
                     loader: 'css-loader'   // translates CSS into CommonJS
                 }, {
-                    loader: 'less-loader'  // compiles Less to CSS
+                    loader: 'less-loader',  // compiles Less to CSS
+                    options: { javascriptEnabled: true }
                 }]
             },
             {
@@ -42,6 +43,10 @@ module.exports = {
                 use: {
                     loader: 'babel-loader'
                 }
+            },
+            {
+                test: /\.svg$/,
+                loader: 'file-loader'
             }
         ]
     },

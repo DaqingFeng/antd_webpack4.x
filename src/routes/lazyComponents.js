@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import Loader from '../views/componentsLoader/index';
-import { homedir } from 'os';
+import Loader from '../components/CustLoader/index';
 
-export const Home = {
-    componsnet: Loader(() => {
-        import '../views/homePage/index';
-    }),
 
-}
+export const Home = Loader(() => {
+    return import('../views/homePage/index');
+});
 
 

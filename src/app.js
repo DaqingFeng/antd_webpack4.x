@@ -1,48 +1,62 @@
 import React, { Component } from 'react';
-import { createStore, bindActionCreators, applyMiddleware } from 'redux';
-import { Provider, connect } from 'react-redux';
-import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
-import ShowBox from './actions/messageBoxActions';
+import { ConnectedRouter } from 'connected-react-router'
+import { Provider } from 'react-redux';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
-import { rootReducer } from './reducers';
-import Home from './views/homePage';
-import MessageBox from './components/MessageBox';
+/*react Locale */
+import ConnectedIntlProvider from './locales/index';
+
+/*Redux Store */
+import store, { history } from './appStore/index';
+
+/**System Routes */
+import sysRoutes, { routesConfig } from './routes/sysRoutes';
+
+/**Layout */
+import BasicLayout from './views/layouts/BasicLayout';
+
+/**Sys Default Setting*/
+import { setting } from './setting/defaultAntSettings';
+
+/**Routes*/
+const switchRoutes = (
+    <Switch>
+        {sysRoutes.map(
+            (prop, key) => {
+                return prop.redirect ? (
+                    <Redirect from={prop.path} to={prop.to} key={key} />
+                ) : (
+                        <Route path={prop.path} component={prop.component} key={key} />
+                    )
+            }
+        )}
+    </Switch>
+);
 
 
-/** Redux Store */
-const store = createStore(
-    rootReducer,
-    applyMiddleware(thunk)
-)
-
+/**App*/
 class App extends Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
     }
     render() {
-        const { messagebox } = this.props;
         return (
-            <div className="nav">
-                <MessageBox  {...messagebox} visible={messagebox.visible || false} />
-                <Home />
-            </div>
+            <BasicLayout routes={routesConfig}
+                setting={setting}
+                pathname={history.location.pathname}>
+            </BasicLayout>
         );
     }
 }
 
-const Main = connect(
-    state => ({
-        messagebox: state.messageBoxReduce || {},
-    }),
-    dispatch => ({
-        actions: bindActionCreators(ShowBox, dispatch)
-    }),
-)(App)
-
 ReactDOM.render(
     <Provider store={store}>
-        <Main />
+        <ConnectedIntlProvider>
+            <ConnectedRouter history={history}>
+                <App />
+            </ConnectedRouter>
+        </ConnectedIntlProvider>
     </Provider>,
     document.getElementById('app')
 )

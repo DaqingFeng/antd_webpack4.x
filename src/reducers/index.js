@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
-import messageBoxReduce from '../reducers/messageBoxReduce';
+import messageBoxReduce from './messageBoxReduce';
+import { changeLocaleReduce } from './systemSettingReduce';
 
-export  const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
     messageBoxReduce,
+    changeLocaleReduce
 });
 
