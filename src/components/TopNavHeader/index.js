@@ -7,7 +7,6 @@ import styles from './index.less';
 export default class TopNavHeader extends PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {
       maxWidth: (props.contentWidth === 'Fixed' ? 1200 : window.innerWidth) - 330 - 165 - 4 - 36,
     };

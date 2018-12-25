@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
-import Link from 'umi/link';
-import router from 'umi/router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Router as router } from 'react-router-dom';
 import { Card, Row, Col, Icon, Avatar, Tag, Divider, Spin, Input } from 'antd';
-import GridContent from '@/components/PageHeaderWrapper/GridContent';
+import GridContent from '../../components/PageHeaderWrapper/GridContent';
 import styles from './Center.less';
 
 @connect(({ loading, user, project }) => ({
@@ -191,8 +191,8 @@ class Center extends PureComponent {
                   </div>
                 </div>
               ) : (
-                'loading...'
-              )}
+                  'loading...'
+                )}
             </Card>
           </Col>
           <Col lg={17} md={24}>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'dva';
-import Link from 'umi/link';
-import router from 'umi/router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Router as router } from 'react-router-dom';
 import { Form, Input, Button, Select, Row, Col, Popover, Progress } from 'antd';
 import styles from './Register.less';
 

@@ -8,7 +8,7 @@ export default function NoticeList({
   onClick,
   onClear,
   title,
-  locale,
+  btnclear,
   emptyText,
   emptyImage,
   showClear = true,
@@ -17,7 +17,7 @@ export default function NoticeList({
     return (
       <div className={styles.notFound}>
         {emptyImage ? <img src={emptyImage} alt="not found" /> : null}
-        <div>{emptyText || locale.emptyText}</div>
+        <div>{emptyText || ""}</div>
       </div>
     );
   }
@@ -33,8 +33,8 @@ export default function NoticeList({
             typeof item.avatar === 'string' ? (
               <Avatar className={styles.avatar} src={item.avatar} />
             ) : (
-              item.avatar
-            )
+                item.avatar
+              )
           ) : null;
 
           return (
@@ -63,7 +63,7 @@ export default function NoticeList({
       </List>
       {showClear ? (
         <div className={styles.clear} onClick={onClear}>
-          {locale.clear} {title}
+          {btnclear.clear} {title}
         </div>
       ) : null}
     </div>

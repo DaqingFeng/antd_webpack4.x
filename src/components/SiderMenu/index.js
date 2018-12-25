@@ -8,6 +8,9 @@ import SiderMenu from './SiderMenu';
  * @param  menus
  */
 const getFlatMenuKeys = menuData => {
+  if (!Array.isArray(menuData)) {
+    return [];
+  }
   let keys = [];
   menuData.forEach(item => {
     if (item.children) {
@@ -37,8 +40,9 @@ const SiderMenuWrapper = props => {
       />
     </Drawer>
   ) : (
-    <SiderMenu {...props} flatMenuKeys={getFlatMenuKeys(menuData)} />
-  );
+      <SiderMenu {...props} flatMenuKeys={getFlatMenuKeys(menuData)} >
+      </SiderMenu>
+    );
 };
 
 export default SiderMenuWrapper;

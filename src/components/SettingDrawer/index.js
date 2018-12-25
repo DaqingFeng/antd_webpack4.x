@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Select, message, Drawer, List, Switch, Divider, Icon, Button, Alert, Tooltip } from 'antd';
+import { Select, message, Drawer, List, Switch, Divider, Icon, Button, Alert, Tooltip, Row, Col } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { connect } from 'react-redux';
 import omit from 'omit.js';
@@ -7,7 +7,11 @@ import styles from './index.less';
 import ThemeColor from './ThemeColor';
 import BlockChecbox from './BlockChecbox';
 import { injectIntl } from 'react-intl';
-import { setting } from '../../setting/defaultAntSettings';
+import { bindActionCreators } from 'redux';
+import cookiesHelper from '../../utils/cookiesHelper';
+
+import * as sysActions from '../../actions/systemSettingActions';
+import * as  globalVariables from '../../utils/globalVariables';
 
 const { Option } = Select;
 const Body = ({ children, title, style }) => (
@@ -23,12 +27,50 @@ const Body = ({ children, title, style }) => (
 );
 
 class SettingDrawer extends PureComponent {
+
   state = {
     collapse: false,
   };
 
+  changeSetting = (key, value) => {
+    const nextState = { ...this.props.setting };
+    nextState[key] = value;
+    if (key === 'layout') {
+      nextState.contentWidth = value === 'topmenu' ? 'Fixed' : 'Fluid';
+    } else if (key === 'fixedHeader' && !value) {
+      nextState.autoHideHeader = false;
+    }
+    this.props.updateSetting(nextState);
+  };
+
+  saveSettingToCookie = () => {
+    const settingStr = JSON.stringify(this.props.setting);
+    cookiesHelper.createCookie(globalVariables.ThemeSettingCookieName, settingStr, 5);
+    message.success(this.props.intl.formatMessage({ id: 'app.setting.cookieInfo' }))
+  }
+
+
+  togglerContent = () => {
+    const { collapse } = this.state;
+    this.setState({ collapse: !collapse });
+  };
+
+
+  renderLayoutSettingItem = item => {
+    const action = React.cloneElement(item.action, {
+      disabled: item.disabled,
+    });
+    return (
+      <Tooltip title={item.disabled ? item.disabledReason : ''} placement="left">
+        <List.Item actions={[action]}>
+          <span style={{ opacity: item.disabled ? '0.5' : '' }}>{item.title}</span>
+        </List.Item>
+      </Tooltip>
+    );
+  };
+
   getLayoutSetting = () => {
-    const { contentWidth, fixedHeader, layout, autoHideHeader, fixSiderbar } = setting;
+    const { contentWidth, fixedHeader, layout, autoHideHeader, fixSiderbar } = this.props.setting;
     return [
       {
         title: this.props.intl.formatMessage({ id: 'app.setting.content-width' }),
@@ -87,43 +129,9 @@ class SettingDrawer extends PureComponent {
     ];
   };
 
-  changeSetting = (key, value) => {
-    const nextState = { ...setting };
-    nextState[key] = value;
-    if (key === 'layout') {
-      nextState.contentWidth = value === 'topmenu' ? 'Fixed' : 'Fluid';
-    } else if (key === 'fixedHeader' && !value) {
-      nextState.autoHideHeader = false;
-    }
-    this.setState(nextState, () => {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'setting/changeSetting',
-        payload: this.state,
-      });
-    });
-  };
-
-  togglerContent = () => {
-    const { collapse } = this.state;
-    this.setState({ collapse: !collapse });
-  };
-
-  renderLayoutSettingItem = item => {
-    const action = React.cloneElement(item.action, {
-      disabled: item.disabled,
-    });
-    return (
-      <Tooltip title={item.disabled ? item.disabledReason : ''} placement="left">
-        <List.Item actions={[action]}>
-          <span style={{ opacity: item.disabled ? '0.5' : '' }}>{item.title}</span>
-        </List.Item>
-      </Tooltip>
-    );
-  };
 
   render() {
-    const { navTheme, primaryColor, layout, colorWeak } = setting;
+    const { navTheme, primaryColor, layout, colorWeak } = this.props.setting;
     const { collapse } = this.state;
     return (
       <Drawer
@@ -199,7 +207,6 @@ class SettingDrawer extends PureComponent {
             dataSource={this.getLayoutSetting()}
             renderItem={this.renderLayoutSettingItem}
           />
-
           <Divider />
 
           <Body title={this.props.intl.formatMessage({ id: 'app.setting.othersettings' })}>
@@ -216,14 +223,27 @@ class SettingDrawer extends PureComponent {
             </List.Item>
           </Body>
           <Divider />
-          <CopyToClipboard
-            text={JSON.stringify(omit(setting, ['colorWeak']), null, 2)}
-            onCopy={() => message.success(this.props.intl.formatMessage({ id: 'app.setting.copyinfo' }))}
-          >
-            <Button block icon="copy">
-              {this.props.intl.formatMessage({ id: 'app.setting.copy' })}
-            </Button>
-          </CopyToClipboard>
+          <div>
+            <Row>
+              <Col span={10}>
+                <CopyToClipboard
+                  text={JSON.stringify(omit(this.props.setting, ['colorWeak']), null, 2)}
+                  onCopy={() => message.success(this.props.intl.formatMessage({ id: 'app.setting.copyinfo' }))}
+                >
+                  <Button block icon="copy">
+                    {this.props.intl.formatMessage({ id: 'app.setting.copy' })}
+                  </Button>
+                </CopyToClipboard>
+              </Col>
+              <Col span={4}></Col>
+              <Icon />
+              <Col span={10}> 
+              <Button block icon="setting" onClick={this.saveSettingToCookie} >
+                {this.props.intl.formatMessage({ id: 'app.setting.cookie' })}
+              </Button>
+              </Col>
+            </Row>
+          </div>
           <Alert
             type="warning"
             className={styles.productionHint}
@@ -244,4 +264,10 @@ class SettingDrawer extends PureComponent {
     );
   }
 }
-export default connect(({ setting }) => ({ setting }))(injectIntl(SettingDrawer))
+export default connect(
+  state => ({
+    setting: state.systemSettingReduce
+  }),
+  dispatch => ({
+    updateSetting: bindActionCreators(sysActions.updateSystemSetting, dispatch)
+  }))(injectIntl(SettingDrawer))

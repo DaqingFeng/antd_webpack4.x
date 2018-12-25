@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Icon, List } from 'antd';
 
 class BindingView extends Component {
   getData = () => [
     {
-      title: formatMessage({ id: 'app.settings.binding.taobao' }, {}),
-      description: formatMessage({ id: 'app.settings.binding.taobao-description' }, {}),
+      title: this.props.intl.formatMessage({ id: 'app.settings.binding.taobao' }, {}),
+      description: this.props.intl.formatMessage({ id: 'app.settings.binding.taobao-description' }, {}),
       actions: [
         <a>
           <FormattedMessage id="app.settings.binding.bind" defaultMessage="Bind" />
@@ -15,8 +15,8 @@ class BindingView extends Component {
       avatar: <Icon type="taobao" className="taobao" />,
     },
     {
-      title: formatMessage({ id: 'app.settings.binding.alipay' }, {}),
-      description: formatMessage({ id: 'app.settings.binding.alipay-description' }, {}),
+      title: this.props.intl.formatMessage({ id: 'app.settings.binding.alipay' }, {}),
+      description: this.props.intl.formatMessage({ id: 'app.settings.binding.alipay-description' }, {}),
       actions: [
         <a>
           <FormattedMessage id="app.settings.binding.bind" defaultMessage="Bind" />
@@ -25,8 +25,8 @@ class BindingView extends Component {
       avatar: <Icon type="alipay" className="alipay" />,
     },
     {
-      title: formatMessage({ id: 'app.settings.binding.dingding' }, {}),
-      description: formatMessage({ id: 'app.settings.binding.dingding-description' }, {}),
+      title: this.props.intl.formatMessage({ id: 'app.settings.binding.dingding' }, {}),
+      description: this.props.intl.formatMessage({ id: 'app.settings.binding.dingding-description' }, {}),
       actions: [
         <a>
           <FormattedMessage id="app.settings.binding.bind" defaultMessage="Bind" />
@@ -57,4 +57,4 @@ class BindingView extends Component {
   }
 }
 
-export default BindingView;
+export default injectIntl(BindingView);

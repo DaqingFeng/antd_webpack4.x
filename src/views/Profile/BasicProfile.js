@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'dva';
+import { connect } from 'react-redux';
 import { Card, Badge, Table, Divider } from 'antd';
-import DescriptionList from '@/components/DescriptionList';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import DescriptionList from '../../components/DescriptionList';
+import PageHeaderWrapper from '../../components/PageHeaderWrapper';
 import styles from './BasicProfile.less';
 
 const { Description } = DescriptionList;

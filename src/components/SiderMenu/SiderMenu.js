@@ -2,10 +2,9 @@ import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 import styles from './index.less';
 import BaseMenu, { getMenuMatches } from './BaseMenu';
-import { urlToList } from '../../utils/pathTools';
+import commonFunc from '../../utils/commonFunc';
 
 const { Sider } = Layout;
 
@@ -15,10 +14,10 @@ const { Sider } = Layout;
  */
 const getDefaultCollapsedSubMenus = props => {
   const {
-    pathname: pathname,
     flatMenuKeys,
   } = props;
-  return urlToList(pathname)
+  const pathname = props.location.pathname;
+  return commonFunc.urlToList(pathname)
     .map(item => getMenuMatches(flatMenuKeys, item)[0])
     .filter(item => item);
 };
@@ -28,26 +27,34 @@ const getDefaultCollapsedSubMenus = props => {
  * [{path:string},{path:string}] => {path,path2}
  * @param  menu
  */
-export const getFlatMenuKeys = menu =>
-  menu.reduce((keys, item) => {
+export const getFlatMenuKeys = menu => {
+  if (!Array.isArray(menu)) {
+    return [];
+  }
+  return menu.reduce((keys, item) => {
     keys.push(item.path);
     if (item.children) {
       return keys.concat(getFlatMenuKeys(item.children));
     }
     return keys;
   }, []);
+}
 
 /**
  * Find all matched menu keys based on paths
  * @param  flatMenuKeys: [/abc, /abc/:id, /abc/:id/info]
  * @param  paths: [/abc, /abc/11, /abc/11/info]
  */
-export const getMenuMatchKeys = (flatMenuKeys, paths) =>
-  paths.reduce(
+export const getMenuMatchKeys = (flatMenuKeys, paths) => {
+  if (!Array.isArray(paths)) {
+    return [];
+  }
+  return paths.reduce(
     (matchKeys, path) =>
       matchKeys.concat(flatMenuKeys.filter(item => pathToRegexp(item).test(path))),
     []
   );
+}
 
 export default class SiderMenu extends PureComponent {
   constructor(props) {
@@ -60,9 +67,9 @@ export default class SiderMenu extends PureComponent {
 
   static getDerivedStateFromProps(props, state) {
     const { pathname } = state;
-    if (props.pathname !== pathname) {
+    if (props.location.pathname !== pathname) {
       return {
-        pathname: props.pathname,
+        pathname: props.location.pathname,
         openKeys: getDefaultCollapsedSubMenus(props),
       };
     }

@@ -2,7 +2,7 @@ import React, { PureComponent, createElement } from 'react';
 import pathToRegexp from 'path-to-regexp';
 import { Breadcrumb } from 'antd';
 import styles from './index.less';
-import { urlToList } from '../_utils/pathTools';
+import commonFunc from '../../utils/commonFunc';
 
 export const getBreadcrumb = (breadcrumbNameMap, url) => {
   let breadcrumb = breadcrumbNameMap[url];
@@ -64,12 +64,12 @@ export default class BreadcrumbView extends PureComponent {
             <Breadcrumb.Item key={item.title}>
               {item.href
                 ? createElement(
-                    linkElement,
-                    {
-                      [linkElement === 'a' ? 'href' : 'to']: item.href,
-                    },
-                    title
-                  )
+                  linkElement,
+                  {
+                    [linkElement === 'a' ? 'href' : 'to']: item.href,
+                  },
+                  title
+                )
                 : title}
             </Breadcrumb.Item>
           );
@@ -81,7 +81,7 @@ export default class BreadcrumbView extends PureComponent {
   conversionFromLocation = (routerLocation, breadcrumbNameMap) => {
     const { breadcrumbSeparator, home, itemRender, linkElement = 'a' } = this.props;
     // Convert the url to an array
-    const pathSnippets = urlToList(routerLocation.pathname);
+    const pathSnippets = commonFunc.urlToList(routerLocation.pathname);
     // Loop data mosaic routing
     const extraBreadcrumbItems = pathSnippets.map((url, index) => {
       const currentBreadcrumb = getBreadcrumb(breadcrumbNameMap, url);
@@ -158,15 +158,15 @@ export default class BreadcrumbView extends PureComponent {
     return last || !route.component ? (
       <span>{route.breadcrumbName}</span>
     ) : (
-      createElement(
-        linkElement,
-        {
-          href: paths.join('/') || '/',
-          to: paths.join('/') || '/',
-        },
-        route.breadcrumbName
-      )
-    );
+        createElement(
+          linkElement,
+          {
+            href: paths.join('/') || '/',
+            to: paths.join('/') || '/',
+          },
+          route.breadcrumbName
+        )
+      );
   };
 
   render() {

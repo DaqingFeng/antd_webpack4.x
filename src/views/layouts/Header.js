@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
+import { bindActionCreators } from 'redux';
+
 import { injectIntl } from 'react-intl';
 import { Layout, message } from 'antd';
 import Animate from 'rc-animate';
 import { connect } from 'react-redux';
-import createHistory from 'history/createBrowserHistory'
 import GlobalHeader from '../../components/GlobalHeader';
 import TopNavHeader from '../../components/TopNavHeader';
+import { getNotice, clearnNotice } from '../../actions/systemSettingActions';
+
 import styles from './Header.less';
-
-const history = createHistory()
-
 const { Header } = Layout;
 
 class HeaderView extends PureComponent {
@@ -43,27 +43,19 @@ class HeaderView extends PureComponent {
     return collapsed ? 'calc(100% - 80px)' : 'calc(100% - 256px)';
   };
 
-  handleNoticeClear = type => {
-    message.success(`${this.props.intl.formatMessage({ id: 'component.noticeIcon.cleared' })} ${type}`);
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'global/clearNotices',
-      payload: type,
-    });
-  };
 
   handleMenuClick = ({ key }) => {
     const { dispatch } = this.props;
     if (key === 'userCenter') {
-      history.push('/account/center');
+      this.props.history.push('/account/center');
       return;
     }
     if (key === 'triggerError') {
-      history.push('/exception/trigger');
+      this.props.history.push('/exception/500');
       return;
     }
     if (key === 'userinfo') {
-      history.push('/account/settings/base');
+      this.props.history.push('/account/settings/base');
       return;
     }
     if (key === 'logout') {
@@ -73,12 +65,15 @@ class HeaderView extends PureComponent {
     }
   };
 
+  handleNoticeClear = type => {
+    message.success(`${this.props.intl.formatMessage({ id: 'component.noticeIcon.cleared' })} ${type}`);
+    this.props.clearnNotice();
+  };
+
+
   handleNoticeVisibleChange = visible => {
     if (visible) {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'global/fetchNotices',
-      });
+      this.props.getNotice();
     }
   };
 
@@ -152,9 +147,13 @@ class HeaderView extends PureComponent {
   }
 }
 
-export default connect(({ user, global, loading }) => ({
-  currentUser: user ? user.currentUser : null,
-  collapsed: global ? global.collapsed : null,
-  fetchingNotices: loading ? loading.effects['global/fetchNotices'] : null,
-  notices: global ? global.notices : null,
-}))(injectIntl(HeaderView));
+export default connect(
+  state => ({
+    currentUser: state.currentUserReduce,
+    collapsed: state.systemSettingReduce.global.collapsed,
+    notices: state.noticeReduce.notice,
+  }),
+  dispatch => ({
+    clearnNotice: bindActionCreators(clearnNotice, dispatch),
+    getNotice: bindActionCreators(getNotice, dispatch),
+  }))(injectIntl(HeaderView));

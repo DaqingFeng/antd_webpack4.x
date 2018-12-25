@@ -15,26 +15,30 @@ class NoticeIcon extends PureComponent {
     onPopupVisibleChange: () => { },
     onTabChange: () => { },
     onClear: () => { },
-    loading: false,
-    locale: {
+    btnclear: {
       emptyText: this.props.intl.formatMessage({ id: 'component.noticeIcon.empty' }),
       clear: this.props.intl.formatMessage({ id: 'component.noticeIcon.clear' }),
     },
     emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
-  };
+  }
 
   onItemClick = (item, tabProps) => {
     const { onItemClick } = this.props;
-    onItemClick(item, tabProps);
+    if (onItemClick) {
+      onItemClick(item, tabProps);
+    }
   };
 
   onTabChange = tabType => {
     const { onTabChange } = this.props;
-    onTabChange(tabType);
+    if (onTabChange) {
+      onTabChange(tabType);
+    }
   };
 
   getNotificationBox() {
-    const { children, loading, locale, onClear } = this.props;
+    const { btnclear } = this.defaultProps;
+    const { children, loading, onClear } = this.props;
     if (!children) {
       return null;
     }
@@ -51,7 +55,7 @@ class NoticeIcon extends PureComponent {
             onClick={item => this.onItemClick(item, child.props)}
             onClear={() => onClear(child.props.title)}
             title={child.props.title}
-            locale={locale}
+            btnclear={btnclear}
           />
         </TabPane>
       );

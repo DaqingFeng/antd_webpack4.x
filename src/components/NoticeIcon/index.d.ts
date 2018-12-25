@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import NoticeIconTab, { INoticeIconData } from './NoticeIconTab';
 
 export interface INoticeIconProps {
@@ -21,7 +21,7 @@ export interface INoticeIconProps {
   style?: React.CSSProperties;
   onPopupVisibleChange?: (visible: boolean) => void;
   popupVisible?: boolean;
-  locale?: { emptyText: string; clear: string };
+  btnclear?: { emptyText: string; clear: string };
 }
 
 export default class NoticeIcon extends React.Component<INoticeIconProps, any> {

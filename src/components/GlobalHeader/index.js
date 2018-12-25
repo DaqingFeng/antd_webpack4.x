@@ -1,14 +1,20 @@
 import React, { PureComponent } from 'react';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import Debounce from 'lodash-decorators/debounce';
 import styles from './index.less';
 import RightContent from './RightContent';
+import { changeCollapse } from '../../actions/systemSettingActions'
 
-export default class GlobalHeader extends PureComponent {
+
+class GlobalHeader extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
+  
   /* eslint-disable*/
   @Debounce(600)
   triggerResizeEvent() {
@@ -16,12 +22,14 @@ export default class GlobalHeader extends PureComponent {
     const event = document.createEvent('HTMLEvents');
     event.initEvent('resize', true, false);
     window.dispatchEvent(event);
-  }
-  toggle = () => {
-    const { collapsed, onCollapse } = this.props;
-    onCollapse(!collapsed);
-    this.triggerResizeEvent();
   };
+
+  toggle = () => {
+    const { collapsed } = this.props;
+    this.triggerResizeEvent();
+    this.props.changeCollapse(!collapsed);
+  };
+
   render() {
     const { collapsed, isMobile, logo } = this.props;
     return (
@@ -36,9 +44,13 @@ export default class GlobalHeader extends PureComponent {
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.toggle}
         />
-
         <RightContent {...this.props} />
       </div>
     );
   }
 }
+
+export default connect(
+  state => ({ collapsed: state.changeCollapseReduce.collapsed }),
+  dispatch => ({ changeCollapse: bindActionCreators(changeCollapse, dispatch) })
+)(GlobalHeader);

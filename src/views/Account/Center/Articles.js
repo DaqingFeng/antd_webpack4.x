@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { List, Icon, Avatar, Tag } from 'antd';
 import moment from 'moment';
-import { connect } from 'dva';
+import { connect } from 'react-redux';
 import stylesArticles from '../../List/Articles.less';
 import styles from './Articles.less';
 

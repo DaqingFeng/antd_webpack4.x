@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import { List, Card, Icon, Dropdown, Menu, Avatar, Tooltip } from 'antd';
 import numeral from 'numeral';
-import { connect } from 'dva';
-import { formatWan } from '@/utils/utils';
+import { connect } from 'react-redux';
 import stylesApplications from '../../List/Applications.less';
 
 @connect(({ list }) => ({
@@ -73,7 +72,7 @@ class Center extends PureComponent {
               <Card.Meta avatar={<Avatar size="small" src={item.avatar} />} title={item.title} />
               <div className={stylesApplications.cardItemContent}>
                 <CardInfo
-                  activeUser={formatWan(item.activeUser)}
+                  activeUser={item.activeUser}
                   newUser={numeral(item.newUser).format('0,0')}
                 />
               </div>

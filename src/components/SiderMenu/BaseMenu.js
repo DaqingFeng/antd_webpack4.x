@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import pathToRegexp from 'path-to-regexp';
-import { urlToList } from '../../utils/pathTools';
+import commonFunc from '../../utils/commonFunc';
 import styles from './index.less';
 import { injectIntl } from 'react-intl';
 
@@ -22,8 +22,9 @@ const getIcon = icon => {
   return icon;
 };
 
-export const getMenuMatches = (flatMenuKeys, path) =>
-  flatMenuKeys.filter(item => item && pathToRegexp(item).test(path));
+export const getMenuMatches = (flatMenuKeys, path) => {
+  return flatMenuKeys.filter(item => item && pathToRegexp(item).test(path));
+}
 
 class BaseMenu extends PureComponent {
   constructor(props) {
@@ -38,6 +39,9 @@ class BaseMenu extends PureComponent {
    */
   getFlatMenuKeys(menus) {
     let keys = [];
+    if (!Array.isArray(menus)) {
+      return keys;
+    }
     menus.forEach(item => {
       if (item.children) {
         keys = keys.concat(this.getFlatMenuKeys(item.children));
@@ -55,23 +59,20 @@ class BaseMenu extends PureComponent {
     if (!menusData) {
       return [];
     }
-    return menusData
-      .filter(item => item.name && !item.hideInMenu)
+    var navMenuItems = menusData.filter(item => item.name && !item.hideInMenu)
       .map(item => {
         // make dom
-        const ItemDom = this.getSubMenuOrItem(item, parent);
-        return this.checkPermissionItem(item.authority, ItemDom);
+        return this.getSubMenuOrItem(item, parent);
       })
       .filter(item => item);
+    return navMenuItems;
   };
 
   // Get the currently selected menu
-  getSelectedMenuKeys = () => {
-    const {
-      pathname: pathname,
-    } = this.props;
-    return urlToList(pathname).map(itemPath => getMenuMatches(this.flatMenuKeys, itemPath).pop());
-  };
+  getSelectedMenuKeys() {
+    const pathname = this.props.location.pathname;
+    return commonFunc.urlToList(pathname).map(itemPath => getMenuMatches(this.flatMenuKeys, itemPath).pop());
+  }
 
   /**
    * get SubMenu or Item
@@ -120,12 +121,11 @@ class BaseMenu extends PureComponent {
         </a>
       );
     }
-    const { location, isMobile, onCollapse } = this.props;
+    const { isMobile, onCollapse } = this.props;
     return (
       <Link
         to={itemPath}
         target={target}
-        replace={itemPath === location.pathname}
         onClick={
           isMobile
             ? () => {
@@ -138,16 +138,6 @@ class BaseMenu extends PureComponent {
         <span>{name}</span>
       </Link>
     );
-  };
-
-  // permission to check
-  checkPermissionItem = (authority, ItemDom) => {
-    const { Authorized } = this.props;
-    if (Authorized && Authorized.check) {
-      const { check } = Authorized;
-      return check(authority, ItemDom);
-    }
-    return ItemDom;
   };
 
   conversionPath = path => {

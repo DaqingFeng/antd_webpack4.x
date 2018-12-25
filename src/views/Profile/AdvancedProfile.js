@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
-import { connect } from 'dva';
+import { connect } from 'react-redux';
 import {
   Button,
   Menu,
@@ -18,8 +18,8 @@ import {
   Divider,
 } from 'antd';
 import classNames from 'classnames';
-import DescriptionList from '@/components/DescriptionList';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import DescriptionList from '../../components/DescriptionList';
+import PageHeaderWrapper from '../../components/PageHeaderWrapper';
 import styles from './AdvancedProfile.less';
 
 const { Step } = Steps;

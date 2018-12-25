@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
 import styles from './GridContent.less';
 
-class GridContent extends PureComponent {
+export default class GridContent extends PureComponent {
   render() {
     const { contentWidth, children } = this.props;
     let className = `${styles.main}`;
@@ -12,7 +11,3 @@ class GridContent extends PureComponent {
     return <div className={className}>{children}</div>;
   }
 }
-
-export default connect(({ setting }) => ({
-  contentWidth: setting.contentWidth,
-}))(GridContent);

@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
-import Link from 'umi/link';
+import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
-import GlobalFooter from '@/components/GlobalFooter';
+import GlobalFooter from '../../components/GlobalFooter';
 import styles from './UserLayout.less';
-import logo from '../assets/logo.svg';
+import logo from '../../assets/logo.svg';
 
 const links = [
   {
@@ -30,8 +30,6 @@ const copyright = (
 );
 
 class UserLayout extends React.PureComponent {
- 
-
   render() {
     const { children } = this.props;
     return (
@@ -54,5 +52,4 @@ class UserLayout extends React.PureComponent {
     );
   }
 }
-
 export default UserLayout;

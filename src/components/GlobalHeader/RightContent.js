@@ -1,16 +1,17 @@
 import React, { PureComponent } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { injectIntl, FormattedMessage, setLocale } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Spin, Tag, Menu, Icon, Dropdown, Avatar, Tooltip, Button } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import NoticeIcon from '../NoticeIcon';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
-import { Changelocale } from '../../actions/systemSettingActions';
+import { changelocale } from '../../actions/systemSettingActions';
 
 class GlobalHeaderRight extends PureComponent {
+
   getNoticeData() {
     const { notices = [] } = this.props;
     if (notices == null || notices.length === 0) {
@@ -45,9 +46,9 @@ class GlobalHeaderRight extends PureComponent {
   changLang = () => {
     const locale = this.props.intl.locale;
     if (!locale || locale === 'zh-CN') {
-      this.props.Changelocale('en-US');
+      this.props.changelocale('en-US');
     } else {
-      this.props.Changelocale('zh-CN');
+      this.props.changelocale('zh-CN');
     }
   };
 
@@ -58,7 +59,7 @@ class GlobalHeaderRight extends PureComponent {
       onNoticeVisibleChange,
       onMenuClick,
       onNoticeClear,
-      theme,
+      headerTheme,
     } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
@@ -81,9 +82,11 @@ class GlobalHeaderRight extends PureComponent {
         </Menu.Item>
       </Menu>
     );
+    
     const noticeData = this.getNoticeData();
+
     let className = styles.right;
-    if (theme === 'dark') {
+    if (headerTheme === 'dark') {
       className = `${styles.right}  ${styles.dark}`;
     }
     return (
@@ -103,6 +106,7 @@ class GlobalHeaderRight extends PureComponent {
             console.log('enter', value); // eslint-disable-line
           }}
         />
+        
         <Tooltip title={this.props.intl.formatMessage({ id: 'component.globalHeader.help' })}>
           <a
             target="_blank"
@@ -114,6 +118,7 @@ class GlobalHeaderRight extends PureComponent {
             <Icon type="question-circle-o" />
           </a>
         </Tooltip>
+
         <NoticeIcon
           className={styles.action}
           onItemClick={(item, tabProps) => {
@@ -143,6 +148,7 @@ class GlobalHeaderRight extends PureComponent {
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
           />
         </NoticeIcon>
+
         {currentUser ? (
           <Dropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
@@ -160,7 +166,7 @@ class GlobalHeaderRight extends PureComponent {
           )}
         <Button
           size="small"
-          ghost={theme === 'dark'}
+          ghost={headerTheme === 'dark'}
           style={{
             margin: '0 8px',
           }}
@@ -176,6 +182,11 @@ class GlobalHeaderRight extends PureComponent {
 }
 
 export default connect(
-  state => ({ state: state.changeLocaleReduce }),
-  dispatch => ({ Changelocale: bindActionCreators(Changelocale, dispatch) })
+  state => ({
+    locale: state.changeLocaleReduce.lang,
+    fetchingNotices: state.noticeReduce.loading
+  }),
+  dispatch => ({
+    changelocale: bindActionCreators(changelocale, dispatch)
+  })
 )(injectIntl(GlobalHeaderRight))
