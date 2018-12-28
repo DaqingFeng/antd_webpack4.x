@@ -9,4 +9,5 @@ $ npm install
 $ npm start         # visit http://localhost:8100
   
 
-  <img src="https://raw.githubusercontent.com/DaqingFeng/React_antd_Webpack4.x/master/.temp/screenshot/homePage.png">
+
+![] (https://raw.githubusercontent.com/DaqingFeng/React_antd_Webpack4.x/master/.temp/screenshot/homePage.png)
