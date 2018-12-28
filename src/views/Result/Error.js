@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { FormattedMessage} from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { Button, Icon, Card } from 'antd';
 import Result from '../../components/Result';
 import PageHeaderWrapper from '../../components/PageHeaderWrapper';
@@ -50,13 +50,13 @@ const actions = (
   </Button>
 );
 
-export default () => (
+const Error = ({ intl }) => (
   <PageHeaderWrapper>
     <Card bordered={false}>
       <Result
         type="error"
-        title={formatMessage({ id: 'app.result.error.title' })}
-        description={formatMessage({ id: 'app.result.error.description' })}
+        title={intl.formatMessage({ id: 'app.result.error.title' })}
+        description={intl.formatMessage({ id: 'app.result.error.description' })}
         extra={extra}
         actions={actions}
         style={{ marginTop: 48, marginBottom: 16 }}
@@ -64,3 +64,8 @@ export default () => (
     </Card>
   </PageHeaderWrapper>
 );
+
+Error.propTypes = {
+  intl: intlShape.isRequired
+}
+export default injectIntl(Error);

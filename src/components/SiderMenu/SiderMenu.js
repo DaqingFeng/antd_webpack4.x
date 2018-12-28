@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
+import { Link } from 'react-router-dom';
 import pathToRegexp from 'path-to-regexp';
 import classNames from 'classnames';
 import styles from './index.less';
@@ -115,12 +116,14 @@ export default class SiderMenu extends PureComponent {
         className={siderClassName}
       >
         <div className={styles.logo} id="logo">
-          <img
-            src={logo}
-            className="logo"
-            alt="logo"
-          />
-          <h1>Ant Design Pro</h1>
+          <Link to="/" >
+            <img
+              src={logo}
+              className="logo"
+              alt="logo"
+            />
+            <h1>AntD Daqing</h1>
+          </Link>
         </div>
         <BaseMenu
           {...this.props}

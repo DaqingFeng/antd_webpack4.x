@@ -36,7 +36,6 @@ export default class cookiesHelper {
      * @param {Cookie名称} name 
      */
     static removeCookie(name) {
-        createCookie(name, "", -1);
+        cookiesHelper.createCookie(name, "", -1);
     }
-
-}
+};

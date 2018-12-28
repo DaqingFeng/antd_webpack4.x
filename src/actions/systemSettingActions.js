@@ -1,7 +1,7 @@
 import cookiesHelper from '../utils/cookiesHelper';
+import * as themeSetting from '../setting/defaultAntSettings';
 import * as  globalVariables from '../utils/globalVariables';
 import * as sysActionType from '../constants/systemSettingAtiontType';
-
 
 export const changelocale = (lang) => {
     return dispatch => {
@@ -39,10 +39,10 @@ export const getCurrentUser = (currentUser) => {
 export const getSystemSetting = () => {
     return dispatch => {
         const settingStr = cookiesHelper.readCookie(globalVariables.ThemeSettingCookieName);
-        if (!settingStr) {
-            return;
+        let setting = themeSetting.sysSetting;
+        if (settingStr) {
+            setting = JSON.parse(settingStr);
         }
-        const setting = JSON.parse(settingStr);
         dispatch({
             type: sysActionType.GETSETTING,
             setting: setting,

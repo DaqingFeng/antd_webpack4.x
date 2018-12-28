@@ -82,9 +82,8 @@ class GlobalHeaderRight extends PureComponent {
         </Menu.Item>
       </Menu>
     );
-    
-    const noticeData = this.getNoticeData();
 
+    const noticeData = this.getNoticeData();
     let className = styles.right;
     if (headerTheme === 'dark') {
       className = `${styles.right}  ${styles.dark}`;
@@ -106,7 +105,7 @@ class GlobalHeaderRight extends PureComponent {
             console.log('enter', value); // eslint-disable-line
           }}
         />
-        
+
         <Tooltip title={this.props.intl.formatMessage({ id: 'component.globalHeader.help' })}>
           <a
             target="_blank"
@@ -125,6 +124,7 @@ class GlobalHeaderRight extends PureComponent {
             console.log(item, tabProps); // eslint-disable-line
           }}
           onClear={onNoticeClear}
+          count={currentUser.notifyCount}
           onPopupVisibleChange={onNoticeVisibleChange}
           loading={fetchingNotices}
           popupAlign={{ offset: [20, -16] }}

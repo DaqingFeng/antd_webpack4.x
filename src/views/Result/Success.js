@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { Button, Row, Col, Icon, Steps, Card } from 'antd';
 import Result from '../../components/Result';
 import PageHeaderWrapper from '../../components/PageHeaderWrapper';
@@ -128,13 +128,13 @@ const actions = (
   </Fragment>
 );
 
-export default () => (
+const SuccessPage = ({ intl }) => (
   <PageHeaderWrapper>
     <Card bordered={false}>
       <Result
         type="success"
-        title={formatMessage({ id: 'app.result.success.title' })}
-        description={formatMessage({ id: 'app.result.success.description' })}
+        title={intl.formatMessage({ id: 'app.result.success.title' })}
+        description={intl.formatMessage({ id: 'app.result.success.description' })}
         extra={extra}
         actions={actions}
         style={{ marginTop: 48, marginBottom: 16 }}
@@ -142,3 +142,8 @@ export default () => (
     </Card>
   </PageHeaderWrapper>
 );
+SuccessPage.propTypes = {
+  intl: intlShape.isRequired
+}
+
+export default injectIntl(SuccessPage);

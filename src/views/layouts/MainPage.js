@@ -4,46 +4,20 @@ import DocumentTitle from 'react-document-title';
 import isEqual from 'lodash/isEqual';
 import memoizeOne from 'memoize-one';
 import { connect } from 'react-redux';
+import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
-
 import pathToRegexp from 'path-to-regexp';
-import { enquireScreen, unenquireScreen } from 'enquire-js';
 import { injectIntl } from 'react-intl';
 import { renderRoutes } from 'react-router-config'
-import * as sysActions from '../../actions/systemSettingActions';
 
+import * as sysActions from '../../actions/systemSettingActions';
 import SiderMenu from '../../components/SiderMenu';
+import commonFunc from '../../utils/commonFunc';
 import SettingDrawer from '../../components/SettingDrawer';
 import logo from '../../assets/logo.svg';
 import Footer from './Footer';
 import Header from './Header';
-
 const { Content } = Layout;
-
-const formStyle = {
-  'screen-xs': {
-    maxWidth: 575,
-  },
-  'screen-sm': {
-    minWidth: 576,
-    maxWidth: 767,
-  },
-  'screen-md': {
-    minWidth: 768,
-    maxWidth: 991,
-  },
-  'screen-lg': {
-    minWidth: 992,
-    maxWidth: 1199,
-  },
-  'screen-xl': {
-    minWidth: 1200,
-    maxWidth: 1599,
-  },
-  'screen-xxl': {
-    minWidth: 1600,
-  },
-};
 
 // Conversion router to menu.
 const formatter = (data, parentPath = '', parentName) => {
@@ -72,6 +46,32 @@ const formatter = (data, parentPath = '', parentName) => {
   });
 }
 
+//Reponsivee 
+const query = {
+  'screen-xs': {
+    maxWidth: 575,
+  },
+  'screen-sm': {
+    minWidth: 576,
+    maxWidth: 767,
+  },
+  'screen-md': {
+    minWidth: 768,
+    maxWidth: 991,
+  },
+  'screen-lg': {
+    minWidth: 992,
+    maxWidth: 1199,
+  },
+  'screen-xl': {
+    minWidth: 1200,
+    maxWidth: 1599,
+  },
+  'screen-xxl': {
+    minWidth: 1600,
+  },
+};
+
 class MainPage extends Component {
   constructor(props) {
     super(props);
@@ -92,7 +92,9 @@ class MainPage extends Component {
         rendering: false,
       });
     });
-    this.enquireHandler = enquireScreen(mobile => {
+
+    window.addEventListener("resize", () => {
+      let mobile = commonFunc.isMobile();
       const { isMobile } = this.state;
       if (isMobile !== mobile) {
         this.setState({
@@ -102,20 +104,19 @@ class MainPage extends Component {
     });
   }
 
+
   componentDidUpdate(preProps) {
-    // After changing to phone mode,
-    // if collapsed is true, you need to click twice to display
-    this.breadcrumbNameMap = this.getBreadcrumbNameMap();
     const { isMobile } = this.state;
     const { collapsed } = this.props;
     if (isMobile && !preProps.isMobile && !collapsed) {
-      this.handleMenuCollapse(false);
+      this.props.handleMenuCollapse(false);
     }
+    // if collapsed is true, you need to click twice to display
+    this.breadcrumbNameMap = this.getBreadcrumbNameMap();
   }
 
   componentWillUnmount() {
     cancelAnimationFrame(this.renderRef);
-    unenquireScreen(this.enquireHandler);
   }
 
   getContext() {
@@ -153,12 +154,14 @@ class MainPage extends Component {
     return routerMap;
   }
 
+
   matchParamsPath = pathname => {
     const pathKey = Object.keys(this.breadcrumbNameMap).find(key =>
       pathToRegexp(key).test(pathname)
     );
     return this.breadcrumbNameMap[pathKey];
   };
+
 
   getPageTitle = pathname => {
     const currRouterData = this.matchParamsPath(pathname);
@@ -172,6 +175,7 @@ class MainPage extends Component {
     return `${message} - Ant Design Pro`;
   };
 
+
   getLayoutStyle = () => {
     const { isMobile } = this.state;
     const { fixSiderbar, collapsed, layout } = this.props;
@@ -182,6 +186,7 @@ class MainPage extends Component {
     }
     return null;
   };
+
 
   getContentStyle = () => {
     const { fixedHeader } = this.props;
@@ -215,7 +220,7 @@ class MainPage extends Component {
           <SiderMenu
             logo={logo}
             theme={navTheme}
-            onCollapse={this.handleMenuCollapse}
+            onCollapse={this.props.handleMenuCollapse}
             menuData={menuData}
             isMobile={isMobile}
             {...this.props}
@@ -229,7 +234,7 @@ class MainPage extends Component {
         >
           <Header
             menuData={menuData}
-            handleMenuCollapse={this.handleMenuCollapse}
+            handleMenuCollapse={this.props.handleMenuCollapse}
             logo={logo}
             isMobile={isMobile}
             {...this.props}
@@ -244,7 +249,11 @@ class MainPage extends Component {
     return (
       < React.Fragment >
         <DocumentTitle title={this.getPageTitle(location.pathname)}>
-          <div className={classNames(formStyle)}>{layout}</div>
+          <ContainerQuery query={query}>
+            {params => (
+              <div className={classNames(params)}>{layout}</div>
+            )}
+          </ContainerQuery>
         </DocumentTitle>
         {this.renderSettingDrawer()}
       </React.Fragment >
