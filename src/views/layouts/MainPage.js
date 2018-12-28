@@ -70,6 +70,7 @@ const query = {
   'screen-xxl': {
     minWidth: 1600,
   },
+  
 };
 
 class MainPage extends Component {
@@ -92,18 +93,23 @@ class MainPage extends Component {
         rendering: false,
       });
     });
-
+    
+    var mobile = commonFunc.isMobile();
     window.addEventListener("resize", () => {
       let mobile = commonFunc.isMobile();
-      const { isMobile } = this.state;
-      if (isMobile !== mobile) {
-        this.setState({
-          isMobile: mobile,
-        });
-      }
+      this.setMobileState(mobile);
     });
+    this.setMobileState(mobile);
   }
 
+  setMobileState(mobile) {
+    const { isMobile } = this.state;
+    if (isMobile !== mobile) {
+      this.setState({
+        isMobile: mobile,
+      });
+    }
+  }
 
   componentDidUpdate(preProps) {
     const { isMobile } = this.state;

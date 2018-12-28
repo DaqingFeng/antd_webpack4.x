@@ -33,5 +33,5 @@ ReactDOM.render(
             <App />
         </ConnectedIntlProvider>
     </Provider>,
-    document.getElementById('app')
+    document.getElementById('root')
 )
