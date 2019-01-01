@@ -10,6 +10,7 @@ import pathToRegexp from 'path-to-regexp';
 import { injectIntl } from 'react-intl';
 import { renderRoutes } from 'react-router-config'
 
+import Context from './MenuContext';
 import * as sysActions from '../../actions/systemSettingActions';
 import SiderMenu from '../../components/SiderMenu';
 import commonFunc from '../../utils/commonFunc';
@@ -70,7 +71,7 @@ const query = {
   'screen-xxl': {
     minWidth: 1600,
   },
-  
+
 };
 
 class MainPage extends Component {
@@ -93,22 +94,7 @@ class MainPage extends Component {
         rendering: false,
       });
     });
-    
-    var mobile = commonFunc.isMobile();
-    window.addEventListener("resize", () => {
-      let mobile = commonFunc.isMobile();
-      this.setMobileState(mobile);
-    });
-    this.setMobileState(mobile);
-  }
-
-  setMobileState(mobile) {
-    const { isMobile } = this.state;
-    if (isMobile !== mobile) {
-      this.setState({
-        isMobile: mobile,
-      });
-    }
+    this.registerResizeEvent();
   }
 
   componentDidUpdate(preProps) {
@@ -136,6 +122,26 @@ class MainPage extends Component {
   getMenuData() {
     const { routes } = this.props;
     return formatter(routes);
+  }
+
+  /**浏览器尺寸注册 */
+  registerResizeEvent() {
+    var mobile = commonFunc.isMobile();
+    window.addEventListener("resize", () => {
+      let mobile = commonFunc.isMobile();
+      this.setMobileState(mobile);
+    });
+    this.setMobileState(mobile);
+  }
+
+
+  setMobileState(mobile) {
+    const { isMobile } = this.state;
+    if (isMobile !== mobile) {
+      this.setState({
+        isMobile: mobile,
+      });
+    }
   }
 
   /**
@@ -257,7 +263,9 @@ class MainPage extends Component {
         <DocumentTitle title={this.getPageTitle(location.pathname)}>
           <ContainerQuery query={query}>
             {params => (
-              <div className={classNames(params)}>{layout}</div>
+              <Context.Provider value={this.getContext()}>
+                <div className={classNames(params)}>{layout}</div>
+              </Context.Provider>
             )}
           </ContainerQuery>
         </DocumentTitle>
@@ -266,6 +274,7 @@ class MainPage extends Component {
     );
   }
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     handleMenuCollapse: (collapsed) => dispatch(sysActions.changeCollapse(collapsed)),
