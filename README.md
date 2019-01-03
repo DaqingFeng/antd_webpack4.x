@@ -15,8 +15,9 @@ $ npm start         # visit http://localhost:8100
 [![DevDependencies](https://img.shields.io/david/dev/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro?type=dev)
 
 <div align="left">
-## Normal  
+ Normal  
 </div>
+
 ![](https://raw.githubusercontent.com/DaqingFeng/antd_webpack4.x/master/.temp/screenshot/homePageEn.png)
 
 ## Mobile  
