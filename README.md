@@ -14,7 +14,7 @@ $ npm start         # visit http://localhost:8100
 [![Dependencies](https://img.shields.io/david/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro)
 [![DevDependencies](https://img.shields.io/david/dev/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro?type=dev)
 
-<div align="left">
+<div align="left" style='font-size:300'>
  Normal  
 </div>
 
