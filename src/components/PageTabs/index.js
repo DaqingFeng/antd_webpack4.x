@@ -35,11 +35,17 @@ class PageTabs extends Component {
     }
 
     getTabDatas = () => {
-        const openTab = Object.assign(this.props.openTab, { IsRoot: this.props.IsRoot }, { children: this.props.children });
+        const { children, IsRoot } = this.props;
+        const openTab = Object.assign(this.props.openTab, { IsRoot: IsRoot }, { children: children });
         const { tabDatas } = this.state;
         if (tabDatas) {
             if (!this.existTabInPannel(tabDatas, openTab)) {
-                tabDatas.push(openTab);
+                if (openTab.IsRoot) {
+                    tabDatas.unshift(openTab);
+                }
+                else {
+                    tabDatas.push(openTab);
+                }
                 this.setState({
                     tabDatas: tabDatas,
                     activeKey: openTab.path,
