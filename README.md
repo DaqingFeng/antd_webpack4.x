@@ -14,16 +14,20 @@ $ npm start         # visit http://localhost:8100
 [![Dependencies](https://img.shields.io/david/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro)
 [![DevDependencies](https://img.shields.io/david/dev/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro?type=dev)
 
-<div align="left" style='font-size:300'>
+<div align="left" style="font-size: 1.5em;">
  Normal  
 </div>
 
 ![](https://raw.githubusercontent.com/DaqingFeng/antd_webpack4.x/master/.temp/screenshot/homePageEn.png)
 
-## Mobile  
+<div align="left" style="font-size: 1.5em;">
+ Mobile  
+</div>  
 ![](https://raw.githubusercontent.com/DaqingFeng/antd_webpack4.x/master/.temp/screenshot/mobile.png)
 
-## Tabs 
+<div align="left" style="font-size: 1.5em;">
+ Tabs  
+</div>  
 ![](https://raw.githubusercontent.com/DaqingFeng/antd_webpack4.x/master/.temp/screenshot/tabPannel.png)
 
 </div>
