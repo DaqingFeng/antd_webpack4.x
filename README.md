@@ -9,6 +9,15 @@ $ npm install
 $ npm start         # visit http://localhost:8100
 ```  
 
+
+## Buid and publish
+
+```bash
+$ cd React_antd_Webpack4.x
+$ webpack 
+$ Can publish to IIS Or Apache Service.
+```  
+
 <div align="center">
   
 [![Dependencies](https://img.shields.io/david/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro)
