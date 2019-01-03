@@ -70,7 +70,7 @@ class SettingDrawer extends PureComponent {
   };
 
   getLayoutSetting = () => {
-    const { contentWidth, fixedHeader, layout, autoHideHeader, fixSiderbar } = this.props.setting;
+    const { contentWidth, fixedHeader, usingTabs, layout, autoHideHeader, fixSiderbar } = this.props.setting;
     return [
       {
         title: this.props.intl.formatMessage({ id: 'app.setting.content-width' }),
@@ -101,6 +101,7 @@ class SettingDrawer extends PureComponent {
             onChange={checked => this.changeSetting('fixedHeader', checked)}
           />
         ),
+
       },
       {
         title: this.props.intl.formatMessage({ id: 'app.setting.hideheader' }),
@@ -125,6 +126,16 @@ class SettingDrawer extends PureComponent {
             onChange={checked => this.changeSetting('fixSiderbar', checked)}
           />
         ),
+      },
+      {
+        title: this.props.intl.formatMessage({ id: 'app.setting.UsingTabs' }),
+        action: (
+          <Switch
+            size="small"
+            checked={!!usingTabs}
+            onChange={checked => this.changeSetting('usingTabs', checked)}
+          />
+        )
       },
     ];
   };
@@ -237,10 +248,10 @@ class SettingDrawer extends PureComponent {
               </Col>
               <Col span={4}></Col>
               <Icon />
-              <Col span={10}> 
-              <Button block icon="setting" onClick={this.saveSettingToCookie} >
-                {this.props.intl.formatMessage({ id: 'app.setting.cookie' })}
-              </Button>
+              <Col span={10}>
+                <Button block icon="setting" onClick={this.saveSettingToCookie} >
+                  {this.props.intl.formatMessage({ id: 'app.setting.cookie' })}
+                </Button>
               </Col>
             </Row>
           </div>

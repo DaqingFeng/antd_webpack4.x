@@ -1,6 +1,6 @@
-import * as sysActionType from '../constants/systemSettingAtiontType';
+import * as actionsType from '../constants/systemSettingAtiontType';
 
-import * as extensionFun from './systemSettingReduceExtFunc';
+import * as extensionFunc from './systemSettingReduceExt';
 
 /**Routing menu */
 import { sysMenusConfig } from '../routes/sysMenusConfig';
@@ -8,7 +8,7 @@ import { sysMenusConfig } from '../routes/sysMenusConfig';
 /**Sys Default Setting*/
 import { defaultSetting as initSetting } from '../setting/defaultAntSettings';
 
-/**mock Data*/
+/**mock User Data*/
 import { currentUser as initUser } from '../mock/user';
 
 /**Default Notice */
@@ -28,7 +28,7 @@ export const initLocaleState = {
 
 export const getSystemRoutesReduce = (state = { routes: sysMenusConfig }, action) => {
     switch (action.type) {
-        case sysActionType.GETSYSTEMROUTES:
+        case actionsType.GETSYSTEMROUTES:
             return Object.assign({}, state, action.routes);
         default:
             return state;
@@ -37,7 +37,7 @@ export const getSystemRoutesReduce = (state = { routes: sysMenusConfig }, action
 
 export const changeLocaleReduce = (state = initLocaleState, action) => {
     switch (action.type) {
-        case sysActionType.CHANGELOCALE:
+        case actionsType.CHANGELOCALE:
             return Object.assign({}, state, action.payload);
         default:
             return state;
@@ -46,9 +46,9 @@ export const changeLocaleReduce = (state = initLocaleState, action) => {
 
 export const currentUserReduce = (state = initUser, action) => {
     switch (action.type) {
-        case sysActionType.GETCURRENTUSER:
+        case actionsType.GETCURRENTUSER:
             return Object.assign({}, state, action.user);
-        case sysActionType.UPDATEUSER:
+        case actionsType.UPDATEUSER:
             return Object.assign({}, state, action.user);
         default:
             return state;
@@ -57,7 +57,7 @@ export const currentUserReduce = (state = initUser, action) => {
 
 export const changeCollapseReduce = (state = { collapsed: false }, action) => {
     switch (action.type) {
-        case sysActionType.CHANGECOLLAPSE:
+        case actionsType.CHANGECOLLAPSE:
             return Object.assign({}, state, action.payload);
         default:
             return state;
@@ -66,13 +66,13 @@ export const changeCollapseReduce = (state = { collapsed: false }, action) => {
 
 export const systemSettingReduce = (state = initSetting, action) => {
     switch (action.type) {
-        case sysActionType.GETSETTING:
+        case actionsType.GETSETTING:
             return Object.assign({}, state, action.setting);
-        case sysActionType.UPDATESETTING:
+        case actionsType.UPDATESETTING:
             /**Change Theme */
             const { primaryColor, contentWidth } = action.setting;
             if (state.primaryColor !== primaryColor) {
-                extensionFun.updateTheme(primaryColor);
+                extensionFunc.updateTheme(primaryColor);
             }
             /**Change Size*/
             if (state.contentWidth !== contentWidth && window.dispatchEvent) {
@@ -87,11 +87,11 @@ export const systemSettingReduce = (state = initSetting, action) => {
 
 export const noticeReduce = (state = initNotice, action) => {
     switch (action.type) {
-        case sysActionType.FEATCHINGNOTICE:
+        case actionsType.FEATCHINGNOTICE:
             return Object.assign({}, state, action.payload);
-        case sysActionType.FEATCHEDNOTICE:
+        case actionsType.FEATCHEDNOTICE:
             return Object.assign({}, state, action.payload);
-        case sysActionType.CLERANNOTICE:
+        case actionsType.CLERANNOTICE:
             return Object.assign({}, state, action.payload);
         default:
             return state;

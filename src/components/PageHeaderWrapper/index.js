@@ -7,8 +7,18 @@ import GridContent from './GridContent';
 import styles from './index.less';
 import MenuContext from '../../views/layouts/MenuContext';
 
-const PageHeaderWrapper = ({ children, contentWidth, wrapperClassName, top, ...restProps }) => (
-  <div style={{ margin: '-24px -24px 0' }} className={wrapperClassName}>
+const pagewrapperMargin = {
+  normal:
+  {
+    margin: '-24px -24px 0',
+  },
+  tabs: {
+    margin: '-16px -24px 0px',
+  }
+}
+
+const PageHeaderWrapper = ({ children, contentWidth, usingTabs, wrapperClassName, top, ...restProps }) => (
+  <div style={usingTabs ? pagewrapperMargin.tabs : pagewrapperMargin.normal} className={wrapperClassName}>
     {top}
     <MenuContext.Consumer>
       {value => (
@@ -36,5 +46,6 @@ const PageHeaderWrapper = ({ children, contentWidth, wrapperClassName, top, ...r
   </div>
 );
 export default connect((state) => ({
+  usingTabs: state.systemSettingReduce.usingTabs,
   contentWidth: state.systemSettingReduce.contentWidth
 }))(PageHeaderWrapper);

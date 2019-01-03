@@ -197,6 +197,7 @@ export const sysMenusConfig = [
                     "exact": true
                 }]
             }]
-    }, {
+    },
+    {
         "exact": true
     }];

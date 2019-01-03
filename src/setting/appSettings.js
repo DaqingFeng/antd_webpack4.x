@@ -1,2 +1,5 @@
 /**虚拟路径 */
-export let vitrualPath = "";
+export const vitrualPath = "";
+
+/**系统home路径 */
+export const homePageUrl = "/result/other";

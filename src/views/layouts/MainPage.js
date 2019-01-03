@@ -10,13 +10,16 @@ import pathToRegexp from 'path-to-regexp';
 import { injectIntl } from 'react-intl';
 import { renderRoutes } from 'react-router-config'
 
+
 import Context from './MenuContext';
 import * as sysActions from '../../actions/systemSettingActions';
 import SiderMenu from '../../components/SiderMenu';
 import commonFunc from '../../utils/commonFunc';
+import { homePageUrl } from "../../setting/appSettings";
 import SettingDrawer from '../../components/SettingDrawer';
 import logo from '../../assets/logo.svg';
 import Footer from './Footer';
+import PageTabs from "../../components/PageTabs";
 import Header from './Header';
 const { Content } = Layout;
 
@@ -71,7 +74,6 @@ const query = {
   'screen-xxl': {
     minWidth: 1600,
   },
-
 };
 
 class MainPage extends Component {
@@ -199,13 +201,30 @@ class MainPage extends Component {
     return null;
   };
 
+  getPathInfo = () => {
+    let path = location.pathname;
+    let isRoot = false;
+    if (path == "/" || path == homePageUrl) {
+      path = homePageUrl;
+      isRoot = true;
+    }
+    return { path: path, isRoot: isRoot };
+  };
 
   getContentStyle = () => {
-    const { fixedHeader } = this.props;
-    return {
-      margin: '24px 24px 0',
-      paddingTop: fixedHeader ? 64 : 0,
-    };
+    const { fixedHeader, usingTabs } = this.props;
+    if (usingTabs) {
+      return {
+        margin: '5px 24px 0',
+        paddingTop: fixedHeader ? 64 : 0,
+      };
+    }
+    else {
+      return {
+        margin: '24px 24px 0',
+        paddingTop: fixedHeader ? 64 : 0,
+      };
+    }
   };
 
   renderSettingDrawer() {
@@ -218,7 +237,8 @@ class MainPage extends Component {
     return <SettingDrawer />;
   }
 
-  render() {
+  /**Normal Layout */
+  normalLayout = () => {
     const {
       navTheme,
       layout: PropsLayout,
@@ -257,7 +277,7 @@ class MainPage extends Component {
           <Footer />
         </Layout>
       </Layout>
-    );
+    )
     return (
       < React.Fragment >
         <DocumentTitle title={this.getPageTitle(location.pathname)}>
@@ -272,10 +292,84 @@ class MainPage extends Component {
         {this.renderSettingDrawer()}
       </React.Fragment >
     );
+  };
+
+  /**Tab Layout */
+  tabpannelLayout = () => {
+    const {
+      navTheme,
+      layout: PropsLayout,
+    } = this.props;
+    const { isMobile } = this.state;
+    const isTop = PropsLayout === 'topmenu';
+    const menuData = this.getMenuData();
+    const pathInfo = this.getPathInfo();
+    const currentmenuData = this.matchParamsPath(pathInfo.path);
+    const layout = (
+      <Layout>
+        {isTop && !isMobile ? null : (
+          <SiderMenu
+            logo={logo}
+            theme={navTheme}
+            onCollapse={this.props.handleMenuCollapse}
+            menuData={menuData}
+            isMobile={isMobile}
+            {...this.props}
+          />
+        )}
+        <Layout
+          style={{
+            ...this.getLayoutStyle(),
+            minHeight: '100vh',
+          }}
+        >
+          <Header
+            menuData={menuData}
+            handleMenuCollapse={this.props.handleMenuCollapse}
+            logo={logo}
+            isMobile={isMobile}
+            {...this.props}
+          />
+          <Content style={this.getContentStyle()}>
+            <PageTabs openTab={currentmenuData} IsRoot={pathInfo.isRoot}  {...this.props} >
+              {renderRoutes(this.props.route.routes)}
+            </PageTabs>
+          </Content>
+          <Footer />
+        </Layout>
+      </Layout>
+    )
+    return (
+      <React.Fragment >
+        <DocumentTitle title={this.getPageTitle(location.pathname)}>
+          <ContainerQuery query={query}>
+            {params => (
+              <Context.Provider value={this.getContext()}>
+                <div className={classNames(params)}>{layout}</div>
+              </Context.Provider>
+            )}
+          </ContainerQuery>
+        </DocumentTitle>
+        {this.renderSettingDrawer()}
+      </React.Fragment >
+    );
+  };
+
+
+  render() {
+    const {
+      usingTabs
+    } = this.props;
+    if (usingTabs) {
+      return this.tabpannelLayout();
+    }
+    else {
+      return this.normalLayout();
+    }
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapdispatchToProps = (dispatch) => {
   return {
     handleMenuCollapse: (collapsed) => dispatch(sysActions.changeCollapse(collapsed)),
     getSysSetting: (setting) => dispatch(sysActions.getSystemSetting(setting))
@@ -293,5 +387,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapdispatchToProps
 )(injectIntl(MainPage));

@@ -122,7 +122,7 @@ export default class SiderMenu extends PureComponent {
               className="logo"
               alt="logo"
             />
-            <h1>AntD Daqing</h1>
+            <h1>antd Daqing</h1>
           </Link>
         </div>
         <BaseMenu

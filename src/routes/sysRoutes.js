@@ -1,4 +1,5 @@
 import lazyComponents from './lazyComponents';
+import { homePageUrl } from "../setting/appSettings";
 import { Redirect } from 'react-router';
 
 /**System Routes Config  */
@@ -9,7 +10,7 @@ const sysRoutes = [
             {
                 path: '/',
                 exact: true,
-                component: () => <Redirect to='/result/other' />,
+                component: () => <Redirect to={homePageUrl} />,
             },
             {
                 path: '/login',

@@ -1,12 +1,12 @@
+import * as actionTypes from '../constants/systemSettingAtiontType';
 import cookiesHelper from '../utils/cookiesHelper';
 import * as themeSetting from '../setting/defaultAntSettings';
 import * as  globalVariables from '../utils/globalVariables';
-import * as sysActionType from '../constants/systemSettingAtiontType';
 
 export const changelocale = (lang) => {
     return dispatch => {
         dispatch({
-            type: sysActionType.CHANGELOCALE,
+            type: actionTypes.CHANGELOCALE,
             payload: {
                 lang: lang,
             }
@@ -17,7 +17,7 @@ export const changelocale = (lang) => {
 export const changeCollapse = (collapsed) => {
     return dispatch => {
         dispatch({
-            type: sysActionType.CHANGECOLLAPSE,
+            type: actionTypes.CHANGECOLLAPSE,
             payload: {
                 collapsed: collapsed
             }
@@ -28,7 +28,7 @@ export const changeCollapse = (collapsed) => {
 export const getCurrentUser = (currentUser) => {
     return dispatch => {
         dispatch({
-            type: sysActionType.GETCURRENTUSER,
+            type: actionTypes.GETCURRENTUSER,
             user: {
                 currentUser: currentUser,
             }
@@ -39,12 +39,12 @@ export const getCurrentUser = (currentUser) => {
 export const getSystemSetting = () => {
     return dispatch => {
         const settingStr = cookiesHelper.readCookie(globalVariables.ThemeSettingCookieName);
-        let setting = themeSetting.sysSetting;
+        let setting = themeSetting.defaultSetting;
         if (settingStr) {
             setting = JSON.parse(settingStr);
         }
         dispatch({
-            type: sysActionType.GETSETTING,
+            type: actionTypes.GETSETTING,
             setting: setting,
         })
     }
@@ -54,7 +54,7 @@ export const getSystemSetting = () => {
 export const updateSystemSetting = (setting) => {
     return dispatch => {
         dispatch({
-            type: sysActionType.UPDATESETTING,
+            type: actionTypes.UPDATESETTING,
             setting: setting,
         })
     }
@@ -65,7 +65,7 @@ import { notice as initNotice } from '../mock/notice';
 export const getNotice = () => {
     return dispatch => {
         dispatch({
-            type: sysActionType.FEATCHINGNOTICE,
+            type: actionTypes.FEATCHINGNOTICE,
             payload: {
                 loading: true,
                 notice: [],
@@ -74,14 +74,13 @@ export const getNotice = () => {
         //Get Notice
         setTimeout(() => {
             dispatch({
-                type: sysActionType.FEATCHEDNOTICE,
+                type: actionTypes.FEATCHEDNOTICE,
                 payload: {
                     loading: false,
                     notice: initNotice,
                 }
             });
         }, 1500);
-
     }
 };
 
@@ -89,7 +88,7 @@ export const getNotice = () => {
 export const clearnNotice = () => {
     return dispatch => {
         dispatch({
-            type: sysActionType.FEATCHINGNOTICE,
+            type: actionTypes.FEATCHINGNOTICE,
             payload: {
                 loading: true,
             }
@@ -97,7 +96,7 @@ export const clearnNotice = () => {
 
         setTimeout(() => {
             dispatch({
-                type: sysActionType.CLERANNOTICE,
+                type: actionTypes.CLERANNOTICE,
                 payload: {
                     loading: false,
                     notice: [],

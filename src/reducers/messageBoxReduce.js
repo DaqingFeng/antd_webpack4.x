@@ -1,4 +1,4 @@
-import { ShowMessageBox, HideMessageBox } from '../constants/messageBoxActionType';
+import * as actionTypes from '../constants/messageBoxActionType';
 import * as enums from '../utils/Enums';
 
 let initState = {
@@ -12,12 +12,12 @@ let initState = {
 
 const messageBoxReduce = (state = initState, action) => {
     switch (action.type) {
-        case ShowMessageBox:
+        case actionTypes.ShowMessageBox:
             var result = Object.assign(action.payload, {
                 visible: true
             });
             return result;
-        case HideMessageBox:
+        case actionTypes.HideMessageBox:
             var result = Object.assign({}, state, {
                 visible: false
             });

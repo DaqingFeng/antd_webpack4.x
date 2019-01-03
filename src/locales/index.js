@@ -12,13 +12,10 @@ const chooseMessage = (currentLocale = navigator.language) => {
     switch (currentLocale.split('-')[0]) {
         case 'en':
             return en_US;
-            break;
         case 'zh':
             return zh_CN;
-            break;
         default:
             return en_US;
-            break;
     }
 }
 

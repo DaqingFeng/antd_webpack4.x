@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import Loader from '../components/CustLoader/index';
 
 export default {

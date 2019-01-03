@@ -1,4 +1,4 @@
-import { ShowMessageBox, HideMessageBox } from '../constants/messageBoxActionType';
+import * as actionTypes from '../constants/messageBoxActionType';
 import generateGuid from '../utils/generateGuid';
 
 const ShowBox = (type, message, handler) => {
@@ -10,7 +10,7 @@ const ShowBox = (type, message, handler) => {
                 }
             } finally {
                 dispatch({
-                    type: HideMessageBox,
+                    type: actionTypes.HideMessageBox,
                     payload: {
                         visible: false,
                     }
@@ -19,7 +19,7 @@ const ShowBox = (type, message, handler) => {
         };
 
         return dispatch({
-            type: ShowMessageBox,
+            type: actionTypes.ShowMessageBox,
             payload: {
                 id: generateGuid.newGuid(),
                 visible: true,

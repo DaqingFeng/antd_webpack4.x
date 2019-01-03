@@ -1,13 +1,6 @@
 import { combineReducers } from 'redux';
+import { changeLocaleReduce, currentUserReduce, getSystemRoutesReduce, systemSettingReduce, noticeReduce, changeCollapseReduce } from './systemSettingReduce';
 import messageBoxReduce from './messageBoxReduce';
-import {
-    changeLocaleReduce,
-    currentUserReduce,
-    getSystemRoutesReduce,
-    systemSettingReduce,
-    noticeReduce,
-    changeCollapseReduce
-} from './systemSettingReduce';
 
 export const rootReducer = combineReducers({
     messageBoxReduce,

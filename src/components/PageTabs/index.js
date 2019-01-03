@@ -1,22 +1,57 @@
 import React, { Component } from 'react';
 import { Tabs } from 'antd';
+import { injectIntl } from 'react-intl';
+
 const TabPane = Tabs.TabPane;
 
-export default class PageTabs extends Component {
+class PageTabs extends Component {
     constructor(props) {
         super(props);
-        const panes = [
-            { title: '其它', key: '/result/other', closable: false },
-            { title: '403', key: '/exception/403' },
-            { title: '404', key: '/exception/404' },
-        ];
         this.state = {
-            activeKey: panes[0].key,
-            panes,
-        };
+            tabDatas: [],
+            activeKey: null
+        }
+    }
+
+    existTabInPannel = (tabDatas, tabData) => {
+        var exist = false;
+        tabDatas.forEach((value, idx) => {
+            if (value.path == tabData.path) {
+                exist = true;
+            }
+        });
+        return exist;
+    }
+
+    removeTabInPannel = (tabDatas, targetKey) => {
+        var tabData = null;
+        tabDatas.forEach((value, idx) => {
+            if (value.path == targetKey) {
+                tabDatas.splice(idx, 1);
+                tabData = tabDatas[idx - 1];
+            }
+        });
+        return Object.assign({ tabDatas: tabDatas, activeKey: tabData ? tabData.path : null });
+    }
+
+    getTabDatas = () => {
+        const openTab = Object.assign(this.props.openTab, { IsRoot: this.props.IsRoot }, { children: this.props.children });
+        const { tabDatas } = this.state;
+        if (tabDatas) {
+            if (!this.existTabInPannel(tabDatas, openTab)) {
+                tabDatas.push(openTab);
+                this.setState({
+                    tabDatas: tabDatas,
+                    activeKey: openTab.path,
+                });
+            }
+        }
     }
 
     onTabChange = (activeKey) => {
+        this.setState({
+            activeKey: activeKey
+        });
         this.props.history.push(activeKey);
     }
 
@@ -24,37 +59,36 @@ export default class PageTabs extends Component {
         this[action](targetKey);
     }
 
-    add = () => {
-        const panes = this.state.panes;
-        const activeKey = `/exception/500`;
-        panes.push({ title: '500', content: 'Content of new Tab', key: activeKey });
-        this.setState({ panes, activeKey });
-        this.onTabChange(activeKey);
-    }
-
     remove = (targetKey) => {
-        let activeKey = this.state.activeKey;
-        let lastIndex;
-        this.state.panes.forEach((pane, i) => {
-            if (pane.key === targetKey) {
-                lastIndex = i - 1;
-            }
+        const { tabDatas } = this.state;
+        const removedDatas = this.removeTabInPannel(tabDatas, targetKey);
+        this.setState({
+            tabDatas: removedDatas.tabDatas,
+            activeKey: removedDatas.activeKey,
         });
-        const panes = this.state.panes.filter(pane => pane.key !== targetKey);
-        if (lastIndex >= 0 && activeKey === targetKey) {
-            activeKey = panes[lastIndex].key;
+        //push new route.
+        if (removedDatas.activeKey) {
+            this.props.history.push(removedDatas.activeKey);
         }
-        this.setState({ panes, activeKey });
     }
 
     render() {
+        this.getTabDatas();
+        const { tabDatas, activeKey } = this.state;
+        const { openTab } = this.props;
+        var openKey = activeKey;
+        if (openTab) {
+            openKey = openTab.path;
+        }
         return (
-            <Tabs  activeKey={this.state.activeKey}  onEdit={this.onEdit} type="editable-card" onChange={this.onTabChange}>
-                {this.state.panes.map(pane =>
-                    <TabPane tab={pane.title} key={pane.key}
-                        closable={pane.closable}>{pane.content}
-                    </TabPane>)}
+            <Tabs hideAdd activeKey={openKey} onEdit={this.onEdit} type="editable-card" onChange={this.onTabChange}>
+                {tabDatas.map(pane =>
+                    <TabPane tab={this.props.intl.formatMessage({ id: pane.locale })} key={pane.path} closable={!pane.IsRoot}>
+                        {pane.children}
+                    </TabPane>)
+                }
             </Tabs>
         );
     }
 }
+export default injectIntl(PageTabs);
