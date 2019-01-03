@@ -22,12 +22,14 @@ $ npm start         # visit http://localhost:8100
 
 <div align="left" style="font-size: 1.5em;">
  Mobile  
-</div>  
+</div>
+
 ![](https://raw.githubusercontent.com/DaqingFeng/antd_webpack4.x/master/.temp/screenshot/mobile.png)
 
 <div align="left" style="font-size: 1.5em;">
  Tabs  
 </div>  
+
 ![](https://raw.githubusercontent.com/DaqingFeng/antd_webpack4.x/master/.temp/screenshot/tabPannel.png)
 
 </div>
