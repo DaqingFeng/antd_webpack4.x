@@ -21,10 +21,7 @@ const passwordProgressMap = {
   poor: 'exception',
 };
 
-@connect(({ register, loading }) => ({
-  register,
-  submitting: loading.effects['register/submit'],
-}))
+
 @Form.create()
 class Register extends Component {
   state = {
@@ -288,4 +285,7 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default connect((state) => ({
+  register: state.register ? state.register : { status: "", type: 'account' },
+  submitting: state.loading ? state.loading : null,
+}))(Register); 

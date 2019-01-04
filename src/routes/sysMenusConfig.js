@@ -1,5 +1,26 @@
 export const sysMenusConfig = [
     {
+        "path": "/user",
+        "name": "user",
+        "hideInMenu": true,
+        "routes":
+            [{
+                "path": "/user/login",
+                "name": "login",
+                "hideInMenu": true
+            },
+            {
+                "path": "/user/register",
+                "name": "register",
+                "hideInMenu": true
+            },
+            {
+                "path": "/user/register-result",
+                "name": "register-result",
+                "hideInMenu": true
+            }]
+    },
+    {
         "path": "/dashboard",
         "name": "dashboard",
         "icon": "dashboard",

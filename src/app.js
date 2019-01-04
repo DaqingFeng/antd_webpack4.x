@@ -11,7 +11,7 @@ import ConnectedIntlProvider from './locales/index';
 import store, { history } from './appStore/index';
 
 /**System Routes */
-import Routes from './routes/sysRoutes';
+import { sysRoutes } from './routes/sysRoutes';
 
 /**App*/
 class App extends Component {
@@ -21,7 +21,7 @@ class App extends Component {
     render() {
         return (
             <ConnectedRouter history={history}>
-                {renderRoutes(Routes)}
+                {renderRoutes(sysRoutes)}
             </ConnectedRouter>
         );
     }

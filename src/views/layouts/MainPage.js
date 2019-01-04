@@ -8,10 +8,10 @@ import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
 import { injectIntl } from 'react-intl';
-import { renderRoutes } from 'react-router-config'
-
+import { renderRoutes } from 'react-router-config';
 
 import Context from './MenuContext';
+import { menuFormatter } from '../../utils/pathTools';
 import * as sysActions from '../../actions/systemSettingActions';
 import SiderMenu from '../../components/SiderMenu';
 import commonFunc from '../../utils/commonFunc';
@@ -22,33 +22,6 @@ import Footer from './Footer';
 import PageTabs from "../../components/PageTabs";
 import Header from './Header';
 const { Content } = Layout;
-
-// Conversion router to menu.
-const formatter = (data, parentPath = '', parentName) => {
-  if (!Array.isArray(data))
-    return;
-  return data.map(item => {
-    let locale = 'menu';
-    if (parentName && item.name) {
-      locale = `${parentName}.${item.name}`;
-    } else if (item.name) {
-      locale = `menu.${item.name}`;
-    } else if (parentName) {
-      locale = parentName;
-    }
-    const result = {
-      ...item,
-      locale
-    };
-    if (item.routes) {
-      const children = formatter(item.routes, `${parentPath}${item.path}/`, locale);
-      // Reduce memory usage
-      result.children = children;
-    }
-    delete result.routes;
-    return result;
-  });
-}
 
 //Reponsivee 
 const query = {
@@ -123,7 +96,7 @@ class MainPage extends Component {
 
   getMenuData() {
     const { routes } = this.props;
-    return formatter(routes);
+    return menuFormatter(routes);
   }
 
   /**浏览器尺寸注册 */
@@ -331,7 +304,7 @@ class MainPage extends Component {
             {...this.props}
           />
           <Content style={this.getContentStyle()}>
-            <PageTabs openTab={currentmenuData} IsRoot={pathInfo.isRoot}  {...this.props} >
+            <PageTabs openTab={currentmenuData} isRoot={pathInfo.isRoot}  {...this.props} >
               {renderRoutes(this.props.route.routes)}
             </PageTabs>
           </Content>
@@ -357,9 +330,7 @@ class MainPage extends Component {
 
 
   render() {
-    const {
-      usingTabs
-    } = this.props;
+    const { usingTabs } = this.props;
     if (usingTabs) {
       return this.tabpannelLayout();
     }

@@ -27,3 +27,7 @@ export const CLERANNOTICE = 'ClearnNotice';
 
 /**改变Silder折叠开启 */
 export const CHANGECOLLAPSE = 'ChangeCollapse';
+
+
+/**系统Logout */
+export const SYSTEMLOGOUT = 'systemLogOut';

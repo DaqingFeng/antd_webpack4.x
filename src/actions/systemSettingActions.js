@@ -14,6 +14,20 @@ export const changelocale = (lang) => {
     }
 };
 
+export const systemLogOut = () => {
+    return dispatch => {
+        dispatch({
+            type: actionTypes.SYSTEMLOGOUT,
+        });
+        history.push({
+            pathname: '/user/login',
+            search: stringify({
+                redirect: window.location.href,
+            }),
+        })
+    }
+}
+
 export const changeCollapse = (collapsed) => {
     return dispatch => {
         dispatch({

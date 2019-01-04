@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Tabs } from 'antd';
 import { injectIntl } from 'react-intl';
-
 const TabPane = Tabs.TabPane;
 
 class PageTabs extends Component {
@@ -11,6 +10,10 @@ class PageTabs extends Component {
             tabDatas: [],
             activeKey: null
         }
+    }
+
+    componentDidUpdate() {
+        this.getTabDatas();
     }
 
     existTabInPannel = (tabDatas, tabData) => {
@@ -34,21 +37,37 @@ class PageTabs extends Component {
         return Object.assign({ tabDatas: tabDatas, activeKey: tabData ? tabData.path : null });
     }
 
+
+    getComponent = (key) => {
+        let component = null;
+        const { routes } = this.props.route;
+        routes.forEach((item, idx) => {
+            if (item.path == key) {
+                component = item.component;
+            }
+        });
+        if (!component) {
+            component = routes[routes.length - 1].component;
+        }
+        return component;
+    }
+
     getTabDatas = () => {
-        const { children, IsRoot } = this.props;
-        const openTab = Object.assign(this.props.openTab, { IsRoot: IsRoot }, { children: children });
         const { tabDatas } = this.state;
+        const { isRoot, openTab } = this.props;
+        const component = this.getComponent(openTab.path);
+        const insertOpenTab = Object.assign(openTab, { isRoot: isRoot }, { children: component });
         if (tabDatas) {
-            if (!this.existTabInPannel(tabDatas, openTab)) {
-                if (openTab.IsRoot) {
-                    tabDatas.unshift(openTab);
+            if (!this.existTabInPannel(tabDatas, insertOpenTab)) {
+                if (insertOpenTab.isRoot) {
+                    tabDatas.unshift(insertOpenTab);
                 }
                 else {
-                    tabDatas.push(openTab);
+                    tabDatas.push(insertOpenTab);
                 }
                 this.setState({
                     tabDatas: tabDatas,
-                    activeKey: openTab.path,
+                    activeKey: insertOpenTab.path,
                 });
             }
         }
@@ -79,7 +98,6 @@ class PageTabs extends Component {
     }
 
     render() {
-        this.getTabDatas();
         const { tabDatas, activeKey } = this.state;
         const { openTab } = this.props;
         var openKey = activeKey;
@@ -89,8 +107,8 @@ class PageTabs extends Component {
         return (
             <Tabs hideAdd activeKey={openKey} onEdit={this.onEdit} type="editable-card" onChange={this.onTabChange}>
                 {tabDatas.map(pane =>
-                    <TabPane tab={this.props.intl.formatMessage({ id: pane.locale })} key={pane.path} closable={!pane.IsRoot}>
-                        {pane.children}
+                    <TabPane tab={this.props.intl.formatMessage({ id: pane.locale })} key={pane.path} closable={!pane.isRoot}>
+                        <pane.children />
                     </TabPane>)
                 }
             </Tabs>

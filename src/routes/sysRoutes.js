@@ -3,7 +3,30 @@ import { homePageUrl } from "../setting/appSettings";
 import { Redirect } from 'react-router';
 
 /**System Routes Config  */
-const sysRoutes = [
+export const sysRoutes = [
+    {
+        path: "/user",
+        component: lazyComponents.userLayout,
+        routes: [
+            {
+                path: "/user/login",
+                component: lazyComponents.userLogin,
+                exact: true
+            },
+            {
+                path: "/user/register",
+                component: lazyComponents.userRegister,
+                exact: true
+            },
+            {
+                path: "/user/register-result",
+                component: lazyComponents.userRegisterResult,
+                exact: true
+            },
+            {
+                component: lazyComponents.exception404,
+            }],
+    },
     {
         component: lazyComponents.appComponent,
         routes: [
@@ -11,11 +34,6 @@ const sysRoutes = [
                 path: '/',
                 exact: true,
                 component: () => <Redirect to={homePageUrl} />,
-            },
-            {
-                path: '/login',
-                exact: true,
-                component: lazyComponents.userLogin,
             },
             {
                 path: "/exception/403",
@@ -37,21 +55,6 @@ const sysRoutes = [
                 name: "trigger",
                 hideInMenu: true,
                 component: lazyComponents.exceptionTrigger,
-            },
-            {
-                path: "/user/login",
-                component: lazyComponents.userLogin,
-                exact: true
-            },
-            {
-                path: "/user/register",
-                component: lazyComponents.userRegister,
-                exact: true
-            },
-            {
-                path: "/user/register-result",
-                component: lazyComponents.userRegisterResult,
-                exact: true
             },
             {
                 path: "/result/success",
@@ -76,5 +79,4 @@ const sysRoutes = [
             }
         ]
     }
-];
-export default sysRoutes;
+]; 
