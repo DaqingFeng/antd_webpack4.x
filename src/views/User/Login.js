@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Checkbox, Alert, Icon } from 'antd';
+
+import * as  actions from '../../actions/systemSettingActions';
 import Login from '../../components/Login';
 import styles from './Login.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
-
 class LoginPage extends Component {
   state = {
     type: 'account',
@@ -37,14 +39,10 @@ class LoginPage extends Component {
   handleSubmit = (err, values) => {
     const { type } = this.state;
     if (!err) {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'login/login',
-        payload: {
-          ...values,
-          type,
-        },
-      });
+      this.props.loginIn({
+        type: type,
+        ...values,
+      })
     }
   };
 
@@ -115,7 +113,17 @@ class LoginPage extends Component {
   }
 }
 
-export default connect((state) => ({
-  login: state.login ? state.login : { status: "", type: 'account' },
-  submitting: state.loading ? state.loading : null,
-}))(LoginPage);
+const mapStateToProps = (state) => {
+  return ({
+    login: state.SystemLoginInfoReduce,
+    submitting: state.SystemSubmittingReduce.loading,
+  });
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return ({
+    loginIn: (params) => dispatch(actions.systemLogIn(params)),
+  });
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(LoginPage));

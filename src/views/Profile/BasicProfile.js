@@ -26,8 +26,8 @@ const progressColumns = [
       text === 'success' ? (
         <Badge status="success" text="成功" />
       ) : (
-        <Badge status="processing" text="进行中" />
-      ),
+          <Badge status="processing" text="进行中" />
+        ),
   },
   {
     title: '操作员ID',
@@ -41,10 +41,7 @@ const progressColumns = [
   },
 ];
 
-@connect(({ profile, loading }) => ({
-  profile,
-  loading: loading.effects['profile/fetchBasic'],
-}))
+
 class BasicProfile extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
@@ -182,4 +179,7 @@ class BasicProfile extends Component {
   }
 }
 
-export default BasicProfile;
+export default connect(({ profile, loading }) => ({
+  profile,
+  loading: loading.effects['profile/fetchBasic'],
+}))(BasicProfile);

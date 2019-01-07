@@ -5,12 +5,12 @@ import { injectIntl } from 'react-intl';
 import { Layout, message } from 'antd';
 import Animate from 'rc-animate';
 import { connect } from 'react-redux';
+const { Header } = Layout;
+
 import GlobalHeader from '../../components/GlobalHeader';
 import TopNavHeader from '../../components/TopNavHeader';
-import { getNotice, clearnNotice } from '../../actions/systemSettingActions';
-
+import { getNotice, clearnNotice, systemLogOut } from '../../actions/systemSettingActions';
 import styles from './Header.less';
-const { Header } = Layout;
 
 class HeaderView extends PureComponent {
   state = {
@@ -59,7 +59,7 @@ class HeaderView extends PureComponent {
       return;
     }
     if (key === 'logout') {
-      this.props.history.push("/user/login");
+      this.props.systemLogOut();
     }
   };
 
@@ -154,4 +154,5 @@ export default connect(
   dispatch => ({
     clearnNotice: bindActionCreators(clearnNotice, dispatch),
     getNotice: bindActionCreators(getNotice, dispatch),
+    systemLogOut: bindActionCreators(systemLogOut, dispatch)
   }))(injectIntl(HeaderView));

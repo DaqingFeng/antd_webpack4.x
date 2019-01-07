@@ -1,9 +1,8 @@
 import { message } from 'antd';
 
-
-let lessNodesAppended;
 export const updateTheme = primaryColor => {
 
+    let lessNodesAppended;
     // Determine if the component is remounted
     if (!primaryColor) {
         return;

@@ -12,7 +12,7 @@ import { defaultSetting as initSetting } from '../setting/defaultAntSettings';
 import { currentUser as initUser } from '../mock/user';
 
 /**Default Notice */
-export const initNotice = {
+const initNotice = {
     payload: {
         loading: false,
         notice: initNotice,
@@ -20,10 +20,40 @@ export const initNotice = {
 }
 
 /**Init locale */
-export const initLocaleState = {
+const initLocaleState = {
     lang: 'zh-CN',
     defaultLange: 'zh-CN'
 }
+
+/**Init login params */
+const initUserInfo = {
+    payload: {
+        type: 'account',
+        userName: null,
+        password: null,
+        mobile: null,
+        status: '',
+    }
+}
+
+export const SystemLoginInfoReduce = (state = initUserInfo, action) => {
+    switch (action.type) {
+        case actionsType.SYSTEMLOGIN:
+            return Object.assign({}, state, action.payload);
+        default:
+            return state;
+    }
+}
+
+export const SystemSubmittingReduce = (state = { loading: false }, action) => {
+    switch (action.type) {
+        case actionsType.SYSTEMLOGINSUBMITTING:
+            return Object.assign({}, state, action);
+        default:
+            return state;
+    }
+}
+
 
 
 export const getSystemRoutesReduce = (state = { routes: sysMenusConfig }, action) => {

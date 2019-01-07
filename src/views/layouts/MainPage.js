@@ -11,15 +11,17 @@ import { injectIntl } from 'react-intl';
 import { renderRoutes } from 'react-router-config';
 
 import Context from './MenuContext';
-import { menuFormatter } from '../../utils/pathTools';
 import * as sysActions from '../../actions/systemSettingActions';
+import { getUserAuthority } from '../../utils/authority';
+import { menuFormatter } from '../../utils/pathTools';
 import SiderMenu from '../../components/SiderMenu';
 import commonFunc from '../../utils/commonFunc';
+import PageTabs from "../../components/PageTabs";
 import { homePageUrl } from "../../setting/appSettings";
 import SettingDrawer from '../../components/SettingDrawer';
 import logo from '../../assets/logo.svg';
 import Footer from './Footer';
-import PageTabs from "../../components/PageTabs";
+import Authorized from './Authorized';
 import Header from './Header';
 const { Content } = Layout;
 
@@ -331,12 +333,10 @@ class MainPage extends Component {
 
   render() {
     const { usingTabs } = this.props;
-    if (usingTabs) {
-      return this.tabpannelLayout();
-    }
-    else {
-      return this.normalLayout();
-    }
+    const layout = usingTabs ? this.tabpannelLayout() : this.normalLayout();
+    return (<Authorized authorized={getUserAuthority()} {...this.props}>
+      {layout}
+    </Authorized>)
   }
 }
 

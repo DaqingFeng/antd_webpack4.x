@@ -2,6 +2,7 @@ import lazyComponents from './lazyComponents';
 import { homePageUrl } from "../setting/appSettings";
 import { Redirect } from 'react-router';
 
+
 /**System Routes Config  */
 export const sysRoutes = [
     {
@@ -29,6 +30,7 @@ export const sysRoutes = [
     },
     {
         component: lazyComponents.appComponent,
+        authority: ["admin", "user"],
         routes: [
             {
                 path: '/',

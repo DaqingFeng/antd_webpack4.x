@@ -45,7 +45,7 @@ class SettingDrawer extends PureComponent {
 
   saveSettingToCookie = () => {
     const settingStr = JSON.stringify(this.props.setting);
-    cookiesHelper.createCookie(globalVariables.ThemeSettingCookieName, settingStr, 5);
+    cookiesHelper.createCookie(globalVariables.ThemeSettingCookieKey, settingStr, 5);
     message.success(this.props.intl.formatMessage({ id: 'app.setting.cookieInfo' }))
   }
 

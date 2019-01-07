@@ -1,11 +1,17 @@
 import Loader from '../components/CustLoader/index';
 
 export default {
-    homePage: Loader(() => {
-        return import('../views/homePage/index');
+    
+    appComponent: Loader(() => {
+        return import('../views/layouts/MainPage');
     }),
 
-    //#region  User Layout
+    authorized: Loader(() => {
+        return import('../views/layouts/Authorized');
+    }),
+
+
+    //#region User Layout
     userLayout: Loader(() => {
         return import('../views/layouts/UserLayout');
     }),
@@ -20,7 +26,7 @@ export default {
     }),
     //#endregion
 
-    //#region  system LayouT
+    //#region system Layout
     exception403: Loader(() => {
         return import('../views/Exception/403');
     }),
@@ -45,9 +51,5 @@ export default {
     operationOther: Loader(() => {
         return import('../views/Result/Other');
     }),
-    //#endregion
-
-    appComponent: Loader(() => {
-        return import('../views/layouts/MainPage');
-    }),
+     //#endregion
 }

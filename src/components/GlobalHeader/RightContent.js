@@ -46,9 +46,9 @@ class GlobalHeaderRight extends PureComponent {
   changLang = () => {
     const locale = this.props.intl.locale;
     if (!locale || locale === 'zh-CN') {
-      this.props.changelocale('en-US');
+      this.props.changelocaleEvent('en-US');
     } else {
-      this.props.changelocale('zh-CN');
+      this.props.changelocaleEvent('zh-CN');
     }
   };
 
@@ -187,6 +187,6 @@ export default connect(
     fetchingNotices: state.noticeReduce.loading
   }),
   dispatch => ({
-    changelocale: bindActionCreators(changelocale, dispatch)
+    changelocaleEvent: bindActionCreators(changelocale, dispatch)
   })
 )(injectIntl(GlobalHeaderRight))

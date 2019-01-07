@@ -1,7 +1,10 @@
+import { history } from '../appStore'
 import * as actionTypes from '../constants/systemSettingAtiontType';
 import cookiesHelper from '../utils/cookiesHelper';
+import * as authorityHelper from '../utils/authority';
 import * as themeSetting from '../setting/defaultAntSettings';
 import * as  globalVariables from '../utils/globalVariables';
+import * as extensionFunc from './systemSettingActionsExt';
 
 export const changelocale = (lang) => {
     return dispatch => {
@@ -19,12 +22,34 @@ export const systemLogOut = () => {
         dispatch({
             type: actionTypes.SYSTEMLOGOUT,
         });
+        authorityHelper.setUserAuthority("guest");
         history.push({
             pathname: '/user/login',
-            search: stringify({
-                redirect: window.location.href,
-            }),
+            search: '?redirect=' + window.location.href,
         })
+    }
+}
+
+export const systemLogIn = (userInfo) => {
+    return dispatch => {
+        dispatch({
+            type: actionTypes.SYSTEMLOGINSUBMITTING,
+            loading: true,
+        })
+        dispatch({
+            type: actionTypes.SYSTEMLOGIN,
+            payload: {
+                userInfo: userInfo,
+            }
+        });
+        extensionFunc.loginInSystem(userInfo);
+        authorityHelper.setUserAuthority("admin");
+        setTimeout(() => {
+            dispatch({
+                type: actionTypes.SYSTEMLOGINSUBMITTING,
+                loading: false,
+            })
+        }, 2000);
     }
 }
 
@@ -52,7 +77,7 @@ export const getCurrentUser = (currentUser) => {
 
 export const getSystemSetting = () => {
     return dispatch => {
-        const settingStr = cookiesHelper.readCookie(globalVariables.ThemeSettingCookieName);
+        const settingStr = cookiesHelper.readCookie(globalVariables.ThemeSettingCookieKey);
         let setting = themeSetting.defaultSetting;
         if (settingStr) {
             setting = JSON.parse(settingStr);
@@ -117,6 +142,5 @@ export const clearnNotice = () => {
                 }
             });
         }, 1500);
-
     }
 };
