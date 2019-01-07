@@ -25,7 +25,7 @@ export const sysRoutes = [
                 exact: true
             },
             {
-                component: lazyComponents.exception404,
+                component: lazyComponents.userLogin,
             }],
     },
     {
