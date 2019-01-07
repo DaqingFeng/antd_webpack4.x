@@ -25,7 +25,7 @@ export const systemLogOut = () => {
         authorityHelper.setUserAuthority("guest");
         history.push({
             pathname: '/user/login',
-            search: '?redirect=' + window.location.href,
+            search: '?redirect=' + encodeURIComponent(window.location.href),
         })
     }
 }
