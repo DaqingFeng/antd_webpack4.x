@@ -26,7 +26,7 @@ export const systemLogOut = () => {
         history.push({
             pathname: '/user/login',
             search: '?redirect=' + encodeURIComponent(window.location.href),
-        })
+        });
     }
 }
 
@@ -60,7 +60,7 @@ export const changeCollapse = (collapsed) => {
             payload: {
                 collapsed: collapsed
             }
-        })
+        });
     }
 };
 
@@ -85,7 +85,7 @@ export const getSystemSetting = () => {
         dispatch({
             type: actionTypes.GETSETTING,
             setting: setting,
-        })
+        });
     }
 };
 

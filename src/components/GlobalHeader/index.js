@@ -14,7 +14,7 @@ class GlobalHeader extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
-  
+
   /* eslint-disable*/
   @Debounce(600)
   triggerResizeEvent() {
@@ -50,7 +50,5 @@ class GlobalHeader extends PureComponent {
   }
 }
 
-export default connect(
-  state => ({ collapsed: state.changeCollapseReduce.collapsed }),
-  dispatch => ({ changeCollapse: bindActionCreators(changeCollapse, dispatch) })
-)(GlobalHeader);
+export default connect(state => ({ collapsed: state.changeCollapseReduce.collapsed }),
+  dispatch => ({ changeCollapse: bindActionCreators(changeCollapse, dispatch) }))(GlobalHeader);

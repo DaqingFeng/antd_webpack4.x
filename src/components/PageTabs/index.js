@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Tabs } from 'antd';
+import { Tabs,Icon } from 'antd';
 import { injectIntl } from 'react-intl';
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 const TabPane = Tabs.TabPane;
+
 
 class PageTabs extends Component {
     constructor(props) {
@@ -25,6 +27,7 @@ class PageTabs extends Component {
         });
         return exist;
     }
+
 
     removeTabInPannel = (tabDatas, targetKey) => {
         var tabData = null;
@@ -73,6 +76,30 @@ class PageTabs extends Component {
         }
     }
 
+    tabContextMenu() {
+        return (<div >
+            <ContextMenuTrigger id="some_unique_identifier">
+                <div className="well">Right click to see the menu</div>
+            </ContextMenuTrigger>
+            <ContextMenu id="some_unique_identifier">
+                <MenuItem data={{ foo: 'bar' }} onClick={this.onContextMenuClick}>
+                <Icon type="user" />  ContextMenu Item 1
+              </MenuItem>
+                <MenuItem data={{ foo: 'bar' }} onClick={this.onContextMenuClick}>
+                    ContextMenu Item 2
+              </MenuItem>
+                <MenuItem divider />
+                <MenuItem data={{ foo: 'bar' }} onClick={this.onContextMenuClick}>
+                    ContextMenu Item 3
+              </MenuItem>
+            </ContextMenu>
+        </div>);
+    }
+
+    onContextMenuClick = (e, data) => {
+        console.log(data.foo);
+    }
+
     onTabChange = (activeKey) => {
         this.setState({
             activeKey: activeKey
@@ -105,13 +132,16 @@ class PageTabs extends Component {
             openKey = openTab.path;
         }
         return (
-            <Tabs hideAdd activeKey={openKey} onEdit={this.onEdit} type="editable-card" onChange={this.onTabChange}>
-                {tabDatas.map(pane =>
-                    <TabPane tab={this.props.intl.formatMessage({ id: pane.locale })} key={pane.path} closable={!pane.isRoot}>
-                        <pane.children />
-                    </TabPane>)
-                }
-            </Tabs>
+            <div>
+                <Tabs hideAdd activeKey={openKey} onEdit={this.onEdit} type="editable-card" onChange={this.onTabChange}>
+                    {tabDatas.map(pane =>
+                        <TabPane tab={this.props.intl.formatMessage({ id: pane.locale })} key={pane.path} closable={!pane.isRoot}>
+                            <pane.children />
+                        </TabPane>)
+                    }
+                </Tabs>
+                {this.tabContextMenu()}
+            </div>
         );
     }
 }
