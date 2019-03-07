@@ -2,4 +2,4 @@
 export const vitrualPath = "";
 
 /**系统home路径 */
-export const homePageUrl = "/result/other";
+export const homePageUrl = "/result/success";
