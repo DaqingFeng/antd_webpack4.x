@@ -119,7 +119,7 @@ export const getNotice = () => {
                     notice: initNotice,
                 }
             });
-        }, 1500);
+        }, 500);
     }
 };
 
